@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!--  JQuery start -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!--  JQuery end  -->
+    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d3b0088d8856d6aa79f00c3da218ea95&libraries=services,clusterer,drawing"></script>
+    <script src="{{ url_for('static', filename='js/openweather.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/timenow.js') }}"></script>
+</script>
+
+    <meta charset="UTF-8">
+    <title>Title</title>
+<!--부트스트랩 start-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+<!--부트스트랩 끝-->
+</head>
+
+<header>
+  <h1>오늘의 카페</h1>
+    <div class="timenow">
+    <h2><p id="time">00:00:00</p></h2>
+    <h2><p id="date">00:00:00</p></h2>
+        </div>
+    <div class="grid grid--block">
+          <div class="item">
+    어디의 커피가 맛있는지 궁금하신가요? 근처의 카페를 검색해보세요!
+    </div>
+
+      <div class="item">
+   <input type="text" id="searchcafe" placeholder="추천 카테고리 : 위치, 분위기, 평점" size="75">
+    </div>
+  </div>
+    <nav>
+    <span class="spanmenu">커뮤니티</span>
+    <span class="spanmenu">로그인</span>
+    <span class="spanmenu">마이 페이지</span>
+  </nav>
+
+</header>
+<div class="wrap">
+<div class="outer">
+<main>
+  <div class="grid grid--block">
+      <div class="item">
+          <button id="randombutton">오늘의 랜덤 카페! 클릭!</button>
+<!--     위도와 경도 hidden처리 되었음(비교적 깔끔)     -->
+ <h2><span id="latitude"hidden="hidden"></span> <span id="longitude" hidden="hidden"></span><img hidden="hidden" id="wicon" src=""></h2>
+    <h2>|현재 위치:<span id="name"></span>|</h2>
+<h2>| 현재 위치 온도: <span id="temp"></span> |</h2>
+      </div>
+      </div>
+
+<!--test image-->
+
+<div class="grid-image">
+  <img alt="" src="/static/image/image00.jpg" />
+  <img alt="" src="/static/image/image00.jpg" />
+  <img alt="" src="/static/image/image00.jpg" />
+  <img alt="" src="/static/image/image00.jpg" />
+  <img alt="" src="/static/image/image00.jpg" />
+  <img alt="" src="/static/image/image00.jpg" />
+</div>
+
+  <div class="grid grid--block">
+          <div class="item">
+   우리동네 실시간 카페 리뷰!
+    </div>
+      </div>
+
+<div class="cardouter">
+<!--카드 붙여넣고싶다면 여기서부터-->
+<!--  card text-end start  -->
+     <div class="card text-end" style="width: 70rem;">
+    <!--card body start-->
+  <div class="card-body">
+      <img alt="" src="/static/image/image00.jpg" />
+    <h5 class="card-title"></h5>
+<div class="map_wrap">
+    <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+
+    <ul id="category">
+
+        <li id="CE7" data-order="4">
+            <span class="category_bg cafe"></span>
+            카페
+        </li>
+    </ul>
+
+</div>
+    <b>가고싶은 카페 클릭시 새 페이지로 출력됩니다.(수정해야함) </b><br>
+      <b>현재 계신 위치와 약간의 오차가 발생할 수 있습니다. </b>
+      <p class="card-text">`${place_name}`</p>
+    <p class="card-text">위치 : </p>
+      <p class="card-text">전화번호 : </p>
+   <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="refreshmap()" style="font-size: 30px">이 카페 정보 더 보기</button>
+<!-- Button trigger modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modaltitle" id="exampleModalLabel">우리 카페는요...</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+           <div class="top">
+<p style="margin-top:-12px">
+
+</p>
+         <!--async로 비동기식으로 불러오기.상호 의존적이거나 연관 관계가 있는 자바스크립트 파일이나 코드들은 "async"를 사용하면 안 됨-->
+        <!-- 그리하여 나온것이 defer, 비동기로 자바스크립트 코드를 로딩해서 실행하지만, 순서대로 처리됨   -->
+<!--      카카오 지도API 호출 영역         -->
+    <script src="{{ url_for('static', filename='js/kakaomap.js') }}">
+    </script>
+<!--      카카오 지도API 호출 영역         -->
+        <div class="item">카페 정보와 별점이 들어갈 영역이에요! </div>
+                   <div class="item">이곳엔 간단 리뷰가 들어갈거에요!</div>
+      <div class="modal-footer">
+      </div>
+    </div>
+
+<!--    top div end      -->
+  </div>
+</div>
+  </div>
+  </div>
+<!--   Modal end   -->
+      <script>
+setTimeout(function(){ map.relayout(); }, 0);
+</script>
+  </div>
+    <!--card body end-->
+</div>
+    <!--  card text-end end  -->
+     </div>
+
+</main>
+
+    <footer>
+      Hello:) i'm footer
+    </footer>
+  </div>
+</div>
+
+</html>
