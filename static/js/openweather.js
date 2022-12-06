@@ -1,5 +1,6 @@
         $(document).ready(function () {
             showLocation();
+            console.log(data)
         });
 
 //발전사항 : 서울 API만 받아오던것이 사용자의 위치를 기반으로 위도와 경도를 받아온 후
@@ -21,7 +22,7 @@
              //api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
                 let options = { method: 'GET' }
               $.ajax(weatherUrl, options).then((response) => {
-                  console.log(response)
+                  // console.log(response)
                   let icon = response.weather[0].icon
                   let iconUrl = "http://openweathermap.org/img/wn/" + icon + "@2x.png"
                   let img = document.querySelector("#wicon")

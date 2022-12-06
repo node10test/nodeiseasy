@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-
+         <!--async로 비동기식으로 불러오기.상호 의존적이거나 연관 관계가 있는 자바스크립트 파일이나 코드들은 "async"를 사용하면 안 됨-->
+        <!-- 그리하여 나온것이 defer, 비동기로 자바스크립트 코드를 로딩해서 실행하지만, 순서대로 처리됨   -->
 <head>
     <!--  JQuery start -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -9,6 +10,7 @@
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d3b0088d8856d6aa79f00c3da218ea95&libraries=services,clusterer,drawing"></script>
     <script src="{{ url_for('static', filename='js/openweather.js') }}"></script>
     <script src="{{ url_for('static', filename='js/timenow.js') }}"></script>
+
 </script>
 
     <meta charset="UTF-8">
@@ -27,11 +29,11 @@
         </div>
     <div class="grid grid--block">
           <div class="item">
-    어디의 커피가 맛있는지 궁금하신가요? 근처의 카페를 검색해보세요!
+    서울 지역의 카페를 검색해보세요!
     </div>
 
       <div class="item">
-   <input type="text" id="searchcafe" placeholder="추천 카테고리 : 위치, 분위기, 평점" size="75">
+   <input type="text" id="searchcafe" placeholder="추천 카테고리 : 위치, 점포명" size="60">
     </div>
   </div>
     <nav>
@@ -47,27 +49,33 @@
   <div class="grid grid--block">
       <div class="item">
           <button id="randombutton">오늘의 랜덤 카페! 클릭!</button>
-<!--     위도와 경도 hidden처리 되었음(비교적 깔끔)     -->
- <h2><span id="latitude"hidden="hidden"></span> <span id="longitude" hidden="hidden"></span><img hidden="hidden" id="wicon" src=""></h2>
-    <h2>|현재 위치:<span id="name"></span>|</h2>
-<h2>| 현재 위치 온도: <span id="temp"></span> |</h2>
+<!--     위도와 경도 날씨 아이콘 hidden처리 되었음(비교적 깔끔)     -->
+         <h2><span id="latitude"hidden="hidden"></span> <span id="longitude" hidden="hidden"></span><img hidden="hidden" id="wicon" src=""></h2>
+            <h2>|현재 계신곳: <span id="name"></span>|</h2>
+        <h2>| 현재 계신곳의 온도: <span id="temp"></span> |</h2>
       </div>
       </div>
 
-<!--test image-->
 
 <div class="grid-image">
-  <img alt="" src="/static/image/image00.jpg" />
-  <img alt="" src="/static/image/image00.jpg" />
-  <img alt="" src="/static/image/image00.jpg" />
-  <img alt="" src="/static/image/image00.jpg" />
-  <img alt="" src="/static/image/image00.jpg" />
-  <img alt="" src="/static/image/image00.jpg" />
+    <div class="sample_image" button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  <img alt="" src="/static/image/dailycafepick.png" />
+
+    </div>
+    <div class="sample_image" button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+  <img alt="" src="/static/image/dailycafepick.png" />
+    </div>
+        <div class="sample_image" button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal3">
+  <img alt="" src="/static/image/dailycafepick.png" />
+    </div>
+        <div class="sample_image" button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal4">
+  <img alt="" src="/static/image/dailycafepick.png" />
+    </div>
 </div>
 
   <div class="grid grid--block">
           <div class="item">
-   우리동네 실시간 카페 리뷰!
+   우리동네 카페는 어디있을까?!
     </div>
       </div>
 
@@ -77,49 +85,47 @@
      <div class="card text-end" style="width: 70rem;">
     <!--card body start-->
   <div class="card-body">
-      <img alt="" src="/static/image/image00.jpg" />
     <h5 class="card-title"></h5>
 <div class="map_wrap">
     <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
 
     <ul id="category">
-
         <li id="CE7" data-order="4">
             <span class="category_bg cafe"></span>
             카페
         </li>
     </ul>
-
+<!-- 카카오 API 호출   -->
+        <script src="{{ url_for('static', filename='js/kakaomap.js') }}"></script>
 </div>
-    <b>가고싶은 카페 클릭시 새 페이지로 출력됩니다.(수정해야함) </b><br>
-      <b>현재 계신 위치와 약간의 오차가 발생할 수 있습니다. </b>
-      <p class="card-text">`${place_name}`</p>
-    <p class="card-text">위치 : </p>
-      <p class="card-text">전화번호 : </p>
-   <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="refreshmap()" style="font-size: 30px">이 카페 정보 더 보기</button>
+    <b class="maptext" >가고싶은 카페 클릭후 점포명 클릭시 카카오맵으로 이동됩니다. </b><br>
+      <b class="maptext">현재 계신 위치와 약간의 오차가 발생할 수 있습니다. </b><br>
+
 <!-- Button trigger modal -->
+
+<!--  [0][1],[0][2],[0][3],[0][4]     [0][1] = 0번째 데이터 1번째 자료
+      [1][1],[1][2],[1][3],[1],[4]...
+     상호명,전화번호,구주소,도로명주소    -->
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-scrollable modal-xl">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modaltitle" id="exampleModalLabel">우리 카페는요...</h1>
+        <h1 class="modaltitle" id="exampleModalLabel">서울시의 카페들을 무작위로 뽑아드려요!</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
            <div class="top">
-<p style="margin-top:-12px">
-
-</p>
-         <!--async로 비동기식으로 불러오기.상호 의존적이거나 연관 관계가 있는 자바스크립트 파일이나 코드들은 "async"를 사용하면 안 됨-->
-        <!-- 그리하여 나온것이 defer, 비동기로 자바스크립트 코드를 로딩해서 실행하지만, 순서대로 처리됨   -->
-<!--      카카오 지도API 호출 영역         -->
-    <script src="{{ url_for('static', filename='js/kakaomap.js') }}">
-    </script>
-<!--      카카오 지도API 호출 영역         -->
-        <div class="item">카페 정보와 별점이 들어갈 영역이에요! </div>
-                   <div class="item">이곳엔 간단 리뷰가 들어갈거에요!</div>
+       <div class="item">
+        <p style="margin-top:-12px">
+        상호명 : {{result[0][1]}}<br>
+        전화번호 : {{result[0][2]}}<br>
+        구 주소 : {{result[0][3]}}<br>
+        도로명주소 : {{result[0][4]}}<br>
+        </p>
+         </div>
+        <div class="item">오늘은 {{result[0][1]}}에서 커피 한잔 어떠신가요? </div>
       <div class="modal-footer">
       </div>
     </div>
@@ -130,9 +136,100 @@
   </div>
   </div>
 <!--   Modal end   -->
-      <script>
-setTimeout(function(){ map.relayout(); }, 0);
-</script>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modaltitle" id="exampleModalLabel2">서울시의 카페들을 무작위로 뽑아드려요!</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+           <div class="top">
+               <div class="item">
+        <p style="margin-top:-12px">
+        상호명 : {{result[1][1]}}<br>
+        전화번호 : {{result[1][2]}}<br>
+        구 주소 : {{result[1][3]}}<br>
+        도로명주소 : {{result[1][4]}}<br>
+        </p>
+               </div>
+        <div class="item">오늘은 {{result[1][1]}}에서 커피 한잔 어떠신가요? </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+
+<!--    top div end      -->
+  </div>
+</div>
+  </div>
+  </div>
+<!--   Modal end   -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modaltitle" id="exampleModalLabel3">서울시의 카페들을 무작위로 뽑아드려요!</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+           <div class="top">
+               <div class="item">
+        <p style="margin-top:-12px">
+        상호명 : {{result[2][1]}}<br>
+        전화번호 : {{result[2][2]}}<br>
+        구 주소 : {{result[2][3]}}<br>
+        도로명주소 : {{result[2][4]}}<br>
+        </p>
+               </div>
+        <div class="item">오늘은 {{result[2][1]}}에서 커피 한잔 어떠신가요? </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+
+<!--    top div end      -->
+  </div>
+</div>
+  </div>
+  </div>
+<!--   Modal end   -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modaltitle" id="exampleModalLabel4">서울시의 카페들을 무작위로 뽑아드려요!</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+           <div class="top">
+               <div class="item">
+        <p style="margin-top:-12px">
+        상호명 : {{result[3][1]}}<br>
+        전화번호 : {{result[3][2]}}<br>
+        구 주소 : {{result[3][3]}}<br>
+        도로명주소 : {{result[3][4]}}<br>
+        </p>
+               </div>
+        <div class="item">오늘은 {{result[3][1]}}에서 커피 한잔 어떠신가요? </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+
+<!--    top div end      -->
+  </div>
+</div>
+  </div>
+  </div>
+<!--   Modal end   -->
+
+
+
+
   </div>
     <!--card body end-->
 </div>
@@ -142,7 +239,7 @@ setTimeout(function(){ map.relayout(); }, 0);
 </main>
 
     <footer>
-      Hello:) i'm footer
+      Node10jo 2022 All rights reserved
     </footer>
   </div>
 </div>

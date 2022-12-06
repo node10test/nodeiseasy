@@ -31,6 +31,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+    z-index: 1;
 }
 .top {
     margin: 30px 0px 50px 0px;
@@ -55,10 +56,15 @@ header {
 .card-text{
     font-size: 40px;
 }
-
+.maptext{
+    font-size: 30px;
+}
+.randomtext{
+    font-size: 40px;
+}
 
 .grid-image {
-      height: 90vh;
+      height: 85vh;
       display: flex;
       flex-wrap: wrap;
       flex-direction: row; /*수평 정렬*/
@@ -67,8 +73,9 @@ header {
 }
 
 .grid-image img {
-    width:calc(33.333% - 10px);
-    margin:0 15px 15px 0;
+    width:calc(33.33%- 10px);
+    margin:0 15px 15px 45px;
+    border-style: solid;
 }
 .grid-image img:nth-of-type(3n),
 .grid-image img:last-child {
@@ -106,9 +113,9 @@ footer {
     position: sticky;
   font-size: 50px;
   width:100%;
-    height:50px;
+    height:70px;
     margin-top: 50px;
-    background-color:#ff0000;
+    background-color:#EDDBC9;
 }
 #randombutton{
   font-size: 50px;
@@ -168,7 +175,29 @@ body {
 body, html {
    margin:0; padding:0; height:100%;
 }
-
+.sample_image  img {
+    height: 650px;
+    width: 400px;
+    object-fit: cover;
+    padding: 30px;
+	-webkit-transform:scale(1);
+	-moz-transform:scale(1);
+	-ms-transform:scale(1);
+	-o-transform:scale(1);
+	transform:scale(1);
+	-webkit-transition:.3s;
+	-moz-transition:.3s;
+	-ms-transition:.3s;
+	-o-transition:.3s;
+	transition:.3s;
+}
+.sample_image:hover img {
+	-webkit-transform:scale(1.2);
+	-moz-transform:scale(1.2);
+	-ms-transform:scale(1.2);
+	-o-transform:scale(1.2);
+	transform:scale(1.2);
+}
 
 /*kakao map css*/
 .map_wrap, .map_wrap * {margin:0;padding:0;font-size:20px;}
