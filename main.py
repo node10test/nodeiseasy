@@ -22,7 +22,9 @@ def home():
             for data in result:
                 print(data)
     return render_template('index.html', result=result, data=data)
-
+@app.route('/bookapi')
+def home2():
+    return render_template("cafemodal2.html")
 
 
 if __name__ == '__main__':

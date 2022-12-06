@@ -4,13 +4,14 @@
         <!-- 그리하여 나온것이 defer, 비동기로 자바스크립트 코드를 로딩해서 실행하지만, 순서대로 처리됨   -->
 <head>
     <!--  JQuery start -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
 <!--  JQuery end  -->
     <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d3b0088d8856d6aa79f00c3da218ea95&libraries=services,clusterer,drawing"></script>
     <script src="{{ url_for('static', filename='js/openweather.js') }}"></script>
     <script src="{{ url_for('static', filename='js/timenow.js') }}"></script>
-
+    <script src="{{ url_for('static', filename='js/kakaobook.js') }}"></script>
 </script>
 
     <meta charset="UTF-8">
@@ -100,6 +101,7 @@
 </div>
     <b class="maptext" >가고싶은 카페 클릭후 점포명 클릭시 카카오맵으로 이동됩니다. </b><br>
       <b class="maptext">현재 계신 위치와 약간의 오차가 발생할 수 있습니다. </b><br>
+
 
 <!-- Button trigger modal -->
 
@@ -228,13 +230,33 @@
 <!--   Modal end   -->
 
 
-
-
   </div>
     <!--card body end-->
 </div>
     <!--  card text-end end  -->
      </div>
+
+<div class="cardouter">
+<!--카드 붙여넣고싶다면 여기서부터-->
+<!--  card text-end start  -->
+     <div class="card text-end" style="width: 70rem;">
+    <!--card body start-->
+  <div class="card-body">
+    <h5 class="card-title"></h5>
+      <input type="text" id="query" style="font-size: 30px" size="70" placeholder="원하는 책 키워드를 입력해주세요. 예: 모던 자바스크립트 Deep Dive">
+      <button id="search" style="font-size: 30px">검색</button>
+      <div id="bookdiv"></div>
+    <b class="maptext">카페에서 읽을만한 책을 찾으시나요? 그렇다면 이쪽에서 검색해보세요!</b><br>
+    <b class="maptext">키워드 검색도 가능합니다. 검색시 검색 자료는 무한 스크롤로 계속 출력됩니다.</b><br>
+       <b class="maptext" >읽고싶은 책 클릭시 해당책 다음카카오 검색엔진으로 이동됩니다.</b><br>
+</div>
+
+</div>
+</div>
+
+
+
+
 
 </main>
 
