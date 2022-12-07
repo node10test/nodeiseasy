@@ -1,6 +1,7 @@
         $(document).ready(function () {
             var pageNum = 1;
-
+            var booktoken = localStorage.getItem("booktoken");
+            var maptoken = localStorage.getItem("maptoken")
             $("#search").click(function () {
                 $("#bookdiv").html("");
 
@@ -8,7 +9,7 @@
                     method: "GET",
                     url: "https://dapi.kakao.com/v3/search/book?target=title",
                     data: { query: $("#query").val(), page: pageNum},
-                    headers: {Authorization: "KakaoAK 1348380a99485a963bc8a08535311e97"} // ########부분에 본인의 REST API 키를 넣어주세요.
+                    headers: {Authorization: config.bookapikey} // ########부분에 본인의 REST API 키를 넣어주세요.
 
                 })
                 .done(function (msg) {

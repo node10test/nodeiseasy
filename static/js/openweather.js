@@ -1,3 +1,4 @@
+
         $(document).ready(function () {
             showLocation();
             console.log(data)
@@ -15,7 +16,7 @@
 
             //위도와 경도를 추가하여 weatherUrl이 바뀌므로 사용자의 지역에 따라 서로 다른 값 출력
             //위도와 경도에 따른 종속변수 #앞의 값에따라 변하는 변수들
-              let apiKey = "c9094277ce42cae0392ac8222a2dd1f2"
+              let apiKey = config.weatherapikey;
               let weatherUrl = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude
                             + "&lon=" + longitude
                             + "&appid=" + apiKey;
