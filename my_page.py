@@ -1,6 +1,6 @@
 import os
 import pymysql
-from flask import Flask, render_template, jsonify, request, redirect, flash, url_for
+from flask import Flask, render_template, jsonify, request, redirect, flash
 from werkzeug.utils import secure_filename
 
 UPLOAD_FOLDER = 'static/img'
@@ -13,6 +13,7 @@ app.config["SECRET_KEY"] = "1234"
 db = pymysql.connect(user="root", passwd="qwe1357asd!", host="localhost", db="dailycafe", charset="utf8")
 curs = db.cursor()
 
+
 @app.route('/')
 def home():
     return redirect('/my_page')
@@ -21,11 +22,9 @@ def home():
 def my_page():
     return render_template('my_page.html')
 
-
 @app.route('/edit')
 def edit_page():
     return render_template('edit_page.html')
-
 
 @app.route('/users/<id>', methods=['GET'])
 def get_users(id):
@@ -37,7 +36,7 @@ def get_users(id):
     # connection 으로부터 cursor(fetch 역할) 생성
     curs = db.cursor()
     # 쿼리문 작성
-    sql = '''SELECT `name`,`desc`  FROM `user` AS u WHERE u.id = %s'''
+    sql = '''SELECT `name`,`desc` FROM `user` AS u WHERE u.id = %s'''
 
     # 쿼리 실행
     curs.execute(sql, id)
@@ -75,33 +74,33 @@ def post_users(id):
 
     flash("수정이 완료되었습니다")
     return render_template("my_page.html")
+
     # return redirect('/')
     # return jsonify({'msg': '수정이 완료되었습니다'}), 200
 
-# 파일 업로드
-    def allowed_file(filename):
-        return '.' in filename and \
-               filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-    @app.route('/upload', methods=["POST"])
-    def upload_file():
-        print(request.files)
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['file']
-        print(file.filename)
-        # if user does not select file, browser also
-        # submit an empty part without filename
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect("/")
-
-        return jsonify({"msg": "good"})
+    # 파일 업로드
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+@app.route("/upload", methods=['GET', 'POST'])
+def upload():
+    db = pymysql.connect(user="root", passwd="qwe1357asd!", host="localhost", db="dailycafe", charset="utf8")
+    cur = db.cursor(pymysql.cursors.DictCursor)
+    print(1)
+    # now = datetime.now()
+    if request.method == 'POST':
+        files = request.files.getlist('files[]')
+        # print(files)
+        for file in files:
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                cur.execute("INSERT INTO images (file_name) VALUES (%s)", (filename))
+                db.commit()
+            print(file)
+        db.close()
+        flash('File(s) successfully uploaded')
+    return redirect('/edit')
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
