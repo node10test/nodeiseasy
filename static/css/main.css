@@ -104,9 +104,11 @@ header {
 } /* ⬅️ */
 
 .item{
-  font-size: 40px;
+  font-size: 35px;
 }
-
+.item2{
+    font-size: 25px;
+}
 
 
 footer {
@@ -117,6 +119,10 @@ footer {
     margin-top: 50px;
     background-color:#EDDBC9;
 }
+.sample{
+    height: 80%;
+}
+
 #randombutton{
   font-size: 50px;
 }
@@ -151,9 +157,7 @@ main{
 }
 
 
-nav{
-    display: flex;
-}
+
 .spanmenu{
   font-size: 25px;
   margin: 5px;
