@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+</head>
+<body>
+<header>
+  <h1>오늘의 카페</h1>
+  <nav>
+    <a href="/board">커뮤니티</a> |
+    <!--  마이 페이지 접근 시 세션 없으면 경고창-->
+    <a href="/mypage">마이 페이지</a> |
+    <a href="/logout">로그아웃</a> |
+    <a href="/login">로그인</a>
+  </nav>
+</header>
+
+</body>
+</html>
