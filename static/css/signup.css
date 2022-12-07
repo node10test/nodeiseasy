@@ -1,3 +1,14 @@
+@font-face {
+    font-family: 'Cafe24Oneprettynight';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.1/Cafe24Oneprettynight.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+h1 {
+  font-family: Cafe24Oneprettynight, sans-serif;
+}
+
 * {
     margin: 0px;
     box-sizing: border-box;
@@ -15,6 +26,8 @@ html {
 body {
     width: 45%;
     border: 1px solid black;
+    height: 100%;
+    background: linear-gradient(180deg, #FDF0E6 20%, #FDF0E6 80%) fixed;
 }
 
 input{
@@ -25,7 +38,6 @@ input{
     padding-left: 10px;
     padding-right: 10px;
 }
-
 
 .wrapper {
     padding: 10px;
@@ -38,6 +50,10 @@ div {
 
 .title {
     text-align: center;
+    font-weight: 700;
+}
+
+.p_pont {
     font-weight: 700;
 }
 
@@ -57,66 +73,8 @@ div {
     width: 100%;
 }
 
-.phone {
-    display: flex;
-    justify-content: space-between;
-    line-height: 35px;
-}
-
-#phone1 {
-    width: 18%;
-}
-
-#phone2 {
-    width: 30%;
-}
-
-#phone3 {
-    width: 30%;
-}
-
-.auth {
-    display: flex;
-    justify-content: space-between;
-}
-
-.timer {
-    display: flex;
-    justify-content: space-between;
-}
-
-.auth div {
-    width: 30%;
-    text-align: center;
-    font-weight: 700;
-    font-size: 15px;
-}
-
-.auth button {
-    width: 70%;
-}
-
-.timer div {
-    width: 30%;
-    text-align: center;
-    font-weight: 700;
-    font-size: 15px;
-}
-
-.timer button {
-    width: 70%;
-}
-
-.area select {
-    width: 100%;
-    height: 40px;
-}
-
-.gender {
-    text-align: center;
-}
-
 .signUp button {
+    font-family: Cafe24Oneprettynight, sans-serif;
     width: 100%;
     cursor:pointer;
 }

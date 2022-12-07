@@ -1,25 +1,44 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, session, redirect, url_for
+import pymysql
+import bcrypt
+
 app = Flask(__name__)
+# 로컬 mysql 연결 by TK
+conn = pymysql.connect(host='localhost',
+                       user='root',
+                       password='1231234',
+                       db='user',
+                       charset='utf8')
+cur = conn.cursor()
 
+
+# 데이터 보내주기, 완료시 로그인페이지로 이동 by TK
+@app.route('/user', methods=['GET', 'POST'])
+def user_post():
+    email = request.form['email']
+    pass_word = request.form['password']
+    b = bcrypt.hashpw(pass_word.encode('utf-8'), bcrypt.gensalt())
+    insert_password_hash = b.decode()
+    name_re = request.form['name']
+    sql = """INSERT INTO users(email, password, name) VALUES('%s','%s','%s')""" % (email, insert_password_hash, name_re)
+    with conn:
+        with conn.cursor() as cur:
+            cur.execute(sql)
+            conn.commit()
+            return render_template('login.html')
+
+
+# 회원가입 페이지 by TK
 @app.route('/')
-def home():
-return render_template('index.html')
+def signup():
+    return render_template('signup.html')
 
-@app.route("/bucket", methods=["POST"])
-def bucket_post():
-sample_receive = request.form['sample_give']
-print(sample_receive)
-return jsonify({'msg': 'POST(기록) 연결 완료!'})
 
-@app.route("/bucket/done", methods=["POST"])
-def bucket_done():
-sample_receive = request.form['sample_give']
-print(sample_receive)
-return jsonify({'msg': 'POST(완료) 연결 완료!'})
+# 임시로만든 로그인페이지 by TK
+@app.route('/login')
+def login():
+    return render_template('login.html')
 
-@app.route("/bucket", methods=["GET"])
-def bucket_get():
-return jsonify({'msg': 'GET 연결 완료!'})
 
 if __name__ == '__main__':
-app.run('0.0.0.0', port=5000, debug=True)
+    app.run('0.0.0.0', port=5000, debug=True)
