@@ -73,7 +73,7 @@ function signUpCheck(){
     type: 'POST',
     data: {'email':email, 'name':name, 'password':password},
     success: function () {
-            window.location.href = "login";
+            window.location.href = "/login";
         }
 });
 

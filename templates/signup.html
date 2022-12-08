@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>오늘의 카페</title>
-    <link href="../static/css/signup.css" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='/css/signup.css') }}" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="../static/js/signup.js"></script>
+    <script src="{{ url_for('static', filename='/js/signup.js') }}"></script>
 </head>
 <body>
 <div class="wrapper">
@@ -33,7 +33,7 @@
         <div class="line">
             <hr>
         </div>
-        <div class="signUp">
+        <div class="signUp" style="text-align:center">
             <button id="signUpButton" onclick="signUpCheck()">가입하기</button>
         </div>
     </div>
