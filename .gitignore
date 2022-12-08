@@ -8,5 +8,6 @@ templates/searchcafe.html
 =======
 venv
 config.py
+log/server.log
 >>>>>>> cafepj/mypage
 >>>>>>> 5d943d5680d6b72a5b6d2ec8a40a304e4835a96e

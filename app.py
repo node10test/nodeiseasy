@@ -1,17 +1,16 @@
-import datetime
 import ConnectSQl as connectsql
 from flask import Flask, render_template, request, session, redirect, url_for, jsonify, flash
 import pymysql
 import bcrypt
 import os
 from werkzeug.utils import secure_filename
-from datetime import datetime
+import datetime
 from flask_paginate import Pagination, get_page_args, get_page_parameter
 #db 정보에 대한 변수(f스트링으로 받음)
 mysqluser = "root"
 mysqldb = "dailycafe"
 host = "localhost"
-pwd = "12345"
+pwd = "3d720307"
 
 app = Flask(__name__)
 app.secret_key = 'any random string'
@@ -376,11 +375,9 @@ def connectsql():
 # board테이블의 게시판 제목리스트 역순으로 출력
 def post():
     if 'email' in session:
-        email = session['email']
-        return render_template('post.html')
+        username = session['email']
     else:
-        email = None
-        return render_template('login.html')
+        username = None
 
     conn = connectsql()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
@@ -392,7 +389,7 @@ def post():
     cursor.close()
     conn.close()
 
-    return render_template('post.html', result=result, logininfo=email)
+    return render_template('post.html', result=result, logininfo=username)
 
 
 # postlist=postlist
@@ -521,13 +518,12 @@ def write():
             email = session['email']
             usertitle = request.form['title']
             usercontent = request.form['content']
-
             conn = connectsql()
             cursor = conn.cursor()
-            query = f"INSERT INTO board(title, content, name) values (%s, %s, '%{email}%')"
-            value = (email, usertitle, usercontent)
-            # print(email, usertitle, usercontent)
-            cursor.execute(query)
+            query = "INSERT INTO board(title, content, name) values (%s, %s, %s)"
+            value = (usertitle, usercontent, email)
+            print()
+            cursor.execute(query,value)
             conn.commit()
             cursor.close()
             conn.close()
