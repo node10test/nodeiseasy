@@ -1,5 +1,4 @@
 import datetime
-
 from flask import Flask, render_template, request, jsonify
 import pymysql
 app = Flask(__name__)
@@ -21,7 +20,7 @@ if not app.debug:
 @app.errorhandler(404)
 def page_not_found(error):
     asctime = datetime.datetime.now()
-    app.logger.error(f'시간:{asctime}/이것은 중요한 에러입니다. page_not_found에서 일어났습니다.')
+    app.logger.error(f'시간:{asctime}/page_not_found 오류입니다.')
     return "<h1>해당 경로에 맞는 웹페이지가 없습니다. 문제가 지속되면, 죄송하지만 관리자에게 연락해주세요</h1>", 404
 
 @app.route('/')
