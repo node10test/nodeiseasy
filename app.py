@@ -375,11 +375,9 @@ def connectsql():
 # board테이블의 게시판 제목리스트 역순으로 출력
 def post():
     if 'email' in session:
-        email = session['email']
-        return render_template('post.html')
+        username = session['email']
     else:
-        email = None
-        return render_template('login.html')
+        username = None
 
     conn = connectsql()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
@@ -391,7 +389,7 @@ def post():
     cursor.close()
     conn.close()
 
-    return render_template('post.html', result=result, logininfo=email)
+    return render_template('post.html', result=result, logininfo=username)
 
 
 # postlist=postlist
