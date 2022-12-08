@@ -10,12 +10,16 @@ from datetime import datetime
 import math
 from flask_paginate import Pagination, get_page_args, get_page_parameter
 from urllib.parse import urlsplit, parse_qsl
-
+#db 정보에 대한 변수(f스트링으로 받음)
+mysqluser = "root"
+mysqldb = "dailycafe"
+host = "localhost"
+pwd = "3d720307"
 
 app = Flask(__name__)
 app.secret_key = 'any random string'
-#db 암호 여기서 쓰세요
-pwd = "12345"
+
+
 
 if not app.debug:
     # 즉 debug=true면 이는 false로서 아래 함수가 돌아간다.
@@ -43,28 +47,35 @@ def page_not_found(error):
 def home():
     # rand() 배치를 무작위로
     # data return일경우 자료 하나하나, result return 일경우 자료 뭉치
-    conn = pymysql.connect(host='127.0.0.1',
-                           user='root',
+    conn = pymysql.connect(host=f'{host}',
+                           user=f'{mysqluser}',
                            password=f'{pwd}',
-                           db='dailycafe',
+                           db=f'{mysqldb}',
                            charset='utf8')
     sql = "SELECT * FROM cafelist ORDER BY rand() LIMIT 4"
+    conn.connect()
+    cur = conn.cursor()
+    cur.execute(sql)
+    result = cur.fetchall()
+    for data in result:
+        print(data)
+    conn.close()
 
-    with conn:
-        with conn.cursor() as cur:
-            cur.execute(sql)
-            result = cur.fetchall()
-            for data in result:
-                print(data)
+    # with conn:
+    #     with conn.cursor() as cur:
+    #         cur.execute(sql)
+    #         result = cur.fetchall()
+    #         for data in result:
+    #             print(data)
     return render_template('index.html', result=result)
 
 
 @app.route("/searchdata", methods=["POST", "GET"])
 def searchdata():
-    conn = pymysql.connect(host='localhost',
-                           user='root',
+    conn = pymysql.connect(host=f'{host}',
+                           user=f'{mysqluser}',
                            password=f'{pwd}',
-                           db='dailycafe',
+                           db=f'{mysqldb}',
                            charset='utf8')
     if request.method == 'GET':
         search_word = request.args['search_word']
@@ -95,10 +106,10 @@ def searchdata():
 
 @app.route("/searchdata_auto", methods=["POST", "GET"])
 def searchdata_auto():
-    conn = pymysql.connect(host='localhost',
-                           user='root',
-                           password='3d720307',
-                           db='dailycafe',
+    conn = pymysql.connect(host=f'{host}',
+                           user=f'{mysqluser}',
+                           password=f'{pwd}',
+                           db=f'{mysqldb}',
                            charset='utf8')
     if request.method == 'GET':
         search_word = request.args['search_word']
@@ -136,10 +147,10 @@ def signup():
 
 @app.route('/post/users', methods=['GET', 'POST'])
 def user_post():
-    conn = pymysql.connect(host='localhost',
-                           user='root',
+    conn = pymysql.connect(host=f'{host}',
+                           user=f'{mysqluser}',
                            password=f'{pwd}',
-                           db='dailycafe',
+                           db=f'{mysqldb}',
                            charset='utf8')
     cur = conn.cursor()
     email = request.form['email']
@@ -165,10 +176,10 @@ def user_post():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    conn = pymysql.connect(host='localhost',
-                           user='root',
+    conn = pymysql.connect(host=f'{host}',
+                           user=f'{mysqluser}',
                            password=f'{pwd}',
-                           db='dailycafe',
+                           db=f'{mysqldb}',
                            charset='utf8')
     cur = conn.cursor()
     msg = ''
@@ -239,11 +250,11 @@ def edit_page():
 
 @app.route('/users/<id>', methods=['GET'])
 def get_users(id):
-    db = pymysql.connect(user="root",
-                         passwd=f'{pwd}',
-                         host="localhost",
-                         db="dailycafe",
-                         charset="utf8")
+    db = pymysql.connect(host=f'{host}',
+                           user=f'{mysqluser}',
+                           password=f'{pwd}',
+                           db=f'{mysqldb}',
+                           charset='utf8')
     # connection 으로부터 cursor(fetch 역할) 생성
     curs = db.cursor()
     # 쿼리문 작성
@@ -270,7 +281,11 @@ def get_users(id):
 
 @app.route('/users/<id>', methods=['POST'])
 def post_users(id):
-    db = pymysql.connect(user="root", passwd="3d720307", host="localhost", db="dailycafe", charset="utf8")
+    db = pymysql.connect(host=f'{host}',
+                           user=f'{mysqluser}',
+                           password=f'{pwd}',
+                           db=f'{mysqldb}',
+                           charset='utf8')
     curs = db.cursor()
 
     name_receive = request.form['name']
@@ -324,7 +339,11 @@ def upload():
 
 
 def connectsql():
-    conn = pymysql.connect(user="root", passwd=f'{pwd}', host="localhost", db="dailycafe", charset="utf8")
+    conn = pymysql.connect(host=f'{host}',
+                           user=f'{mysqluser}',
+                           password=f'{pwd}',
+                           db=f'{mysqldb}',
+                           charset='utf8')
     return conn
 
 #
