@@ -10,7 +10,7 @@ from flask_paginate import Pagination, get_page_args, get_page_parameter
 mysqluser = "root"
 mysqldb = "dailycafe"
 host = "localhost"
-pwd = "12345"
+pwd = "3d720307"
 
 app = Flask(__name__)
 app.secret_key = 'any random string'
@@ -520,13 +520,12 @@ def write():
             email = session['email']
             usertitle = request.form['title']
             usercontent = request.form['content']
-
             conn = connectsql()
             cursor = conn.cursor()
-            query = f"INSERT INTO board(title, content, name) values (%s, %s, '%{email}%')"
-            value = (email, usertitle, usercontent)
-            # print(email, usertitle, usercontent)
-            cursor.execute(query)
+            query = "INSERT INTO board(title, content, name) values (%s, %s, %s)"
+            value = (usertitle, usercontent, email)
+            print()
+            cursor.execute(query,value)
             conn.commit()
             cursor.close()
             conn.close()
