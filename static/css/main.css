@@ -35,6 +35,9 @@ header {
   align-items: center;
     z-index: 1;
 }
+.pagination a { color: inherit; font-size: 50px; font-style: inherit; margin: 25px; background-color: #FDF0E6;}
+
+
 .top {
     margin: 30px 0px 50px 0px;
     align-items: center;
