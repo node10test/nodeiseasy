@@ -5,11 +5,8 @@ import pymysql
 import bcrypt
 import os
 from werkzeug.utils import secure_filename
-import urllib.request
 from datetime import datetime
-import math
 from flask_paginate import Pagination, get_page_args, get_page_parameter
-from urllib.parse import urlsplit, parse_qsl
 #db 정보에 대한 변수(f스트링으로 받음)
 mysqluser = "root"
 mysqldb = "dailycafe"
@@ -29,7 +26,7 @@ if not app.debug:
 
     # logging 핸들러에서 사용할 핸들러를 불러온다.
     file_handler = RotatingFileHandler(
-        'dave_server.log', maxBytes=2000, backupCount=10)
+        'log/server.log', maxBytes=2000, backupCount=10)
     file_handler.setLevel(logging.WARNING)
     # 어느 단계까지 로깅을 할지를 적어줌
     # app.logger.addHandler() 에 등록시켜줘야 app.logger 로 사용 가능
@@ -53,20 +50,12 @@ def home():
                            db=f'{mysqldb}',
                            charset='utf8')
     sql = "SELECT * FROM cafelist ORDER BY rand() LIMIT 4"
-    conn.connect()
-    cur = conn.cursor()
-    cur.execute(sql)
-    result = cur.fetchall()
-    for data in result:
-        print(data)
-    conn.close()
-
-    # with conn:
-    #     with conn.cursor() as cur:
-    #         cur.execute(sql)
-    #         result = cur.fetchall()
-    #         for data in result:
-    #             print(data)
+    with conn:
+        with conn.cursor() as cur:
+            cur.execute(sql)
+            result = cur.fetchall()
+            for data in result:
+                print(data)
     return render_template('index.html', result=result)
 
 
@@ -98,7 +87,7 @@ def searchdata():
                 data_list = curs.fetchall()
                 print(data_list)
                 pagination = Pagination(page=page, per_page=per_page, total=all_count, record_name='searchdata',
-                                        css_framework='foundation', bs_version=5)
+                                        css_framework='foundation', bs_version=5,prev_label="<<", next_label=">>")
                 print("this is pagination", pagination)
                 check = False
                 return jsonify({'data': render_template('response.html', data_lists=data_list, pagination=pagination)})
