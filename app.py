@@ -13,7 +13,8 @@ import math
 app = Flask(__name__)
 app.secret_key = 'any random string'
 #db 암호 여기서 쓰세요
-pwd = "3d720307"
+pwd = "12345"
+
 if not app.debug:
     # 즉 debug=true면 이는 false로서 아래 함수가 돌아간다.
     # 실제 상용화단계에서 로깅을 진행해라는 의미이다
@@ -282,9 +283,9 @@ def upload():
 # import pymysql
 
 
-# def connectsql():
-#     conn = pymysql.connect(host='localhost', user='root', passwd='skyboy6612@', db='for_user', charset='utf8')
-#     return conn
+def connectsql():
+    conn = pymysql.connect(user="root", passwd=f'{pwd}', host="localhost", db="dailycafe", charset="utf8")
+    return conn
 
 #
 # @app.route('/')
