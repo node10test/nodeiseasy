@@ -5,6 +5,7 @@
     <title>마이페이지</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="../static/css/my_page.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <script src="{{ url_for('static', filename='js/my_page.js') }}"></script>
 </head>
 <body>
@@ -16,9 +17,27 @@
     {% endif %}
     {% endwith %}
 
-    <div class="header">
-        오늘의 카페
-    </div>
+<!--    <div class="header">-->
+<!--        오늘의 카페-->
+<!--    </div>-->
+    <header>
+    {% if session.get('email') is not none %}
+    <nav>
+        <span class="spanmenu"><a href="/signup">회원가입</a></span>
+        <span class="spanmenu"><a href="/login">로그아웃</a></span>
+        <span class="spanmenu"><a href="/my_page">마이 페이지</a></span>
+        <span class="spanmenu"><a href="/post">커뮤니티</a></span>
+    </nav>
+    {% else %}
+        <nav>
+        <span class="spanmenu"><a href="/signup">회원가입</a></span>
+        <span class="spanmenu"><a href="/login">로그인</a></span>
+        <span class="spanmenu"><a href="/my_page">마이 페이지</a></span>
+        <span class="spanmenu"><a href="/post">커뮤니티</a></span>
+    </nav>
+    {% endif %}
+    </header>
+
     <div class="myprofile">
         <div class="myphoto">
             <img src="../static/images/images.jpg" style="border-radius: 100%;" alt="user-image">

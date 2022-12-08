@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    const id = 4;
+    const id = 1;
     $.ajax({
         type: "GET",
         url: `/users/${id}`,
