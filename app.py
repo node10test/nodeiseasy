@@ -1,5 +1,7 @@
+import datetime
 import ConnectSQl as connectsql
 from flask import Flask, render_template, request, session, redirect, url_for, jsonify, flash
+
 import pymysql
 import bcrypt
 import os
@@ -10,7 +12,8 @@ import math
 
 app = Flask(__name__)
 app.secret_key = 'any random string'
-
+#db 암호 여기서 쓰세요
+pwd = "3d720307"
 if not app.debug:
     # 즉 debug=true면 이는 false로서 아래 함수가 돌아간다.
     # 실제 상용화단계에서 로깅을 진행해라는 의미이다
@@ -29,17 +32,18 @@ if not app.debug:
 @app.errorhandler(404)
 def page_not_found(error):
     asctime = datetime.datetime.now()
-    app.logger.error(f'시간:{asctime}/이것은 중요한 에러입니다. page_not_found에서 일어났습니다.')
+    app.logger.error(f'시간:{asctime}/page_not_found 오류입니다.')
     return "<h1>해당 경로에 맞는 웹페이지가 없습니다. 문제가 지속되면, 죄송하지만 관리자에게 연락해주세요</h1>", 404
 
 
 @app.route('/')
 def home():
+
     # rand() 배치를 무작위로
     # data return일경우 자료 하나하나, result return 일경우 자료 뭉치
     conn = pymysql.connect(host='localhost',
                            user='root',
-                           password='3d720307',
+                           password=f'{pwd}',
                            db='dailycafe',
                            charset='utf8')
     sql = "SELECT * FROM cafelist ORDER BY rand() LIMIT 4"
@@ -57,7 +61,7 @@ def home():
 def searchdata():
     conn = pymysql.connect(host='localhost',
                            user='root',
-                           password='3d720307',
+                           password=f'{pwd}',
                            db='dailycafe',
                            charset='utf8')
     if request.method == 'POST':
@@ -93,8 +97,8 @@ def signup():
 def user_post():
     conn = pymysql.connect(host='localhost',
                            user='root',
-                           password='1231234',
-                           db='user',
+                           password=f'{pwd}',
+                           db='dailycafe',
                            charset='utf8')
     cur = conn.cursor()
     email = request.form['email']
@@ -122,8 +126,8 @@ def user_post():
 def login():
     conn = pymysql.connect(host='localhost',
                            user='root',
-                           password='1231234',
-                           db='user',
+                           password=f'{pwd}',
+                           db='dailycafe',
                            charset='utf8')
     cur = conn.cursor()
     msg = ''
@@ -195,7 +199,7 @@ def edit_page():
 @app.route('/users/<id>', methods=['GET'])
 def get_users(id):
     db = pymysql.connect(user="root",
-                         passwd="qwe1357asd!",
+                         passwd=f'{pwd}',
                          host="localhost",
                          db="dailycafe",
                          charset="utf8")
@@ -225,7 +229,7 @@ def get_users(id):
 
 @app.route('/users/<id>', methods=['POST'])
 def post_users(id):
-    db = pymysql.connect(user="root", passwd="qwe1357asd!", host="localhost", db="dailycafe", charset="utf8")
+    db = pymysql.connect(user="root", passwd="3d720307", host="localhost", db="dailycafe", charset="utf8")
     curs = db.cursor()
 
     name_receive = request.form['name']
@@ -255,7 +259,7 @@ def allowed_file(filename):
 @app.route("/upload", methods=['GET', 'POST'])
 def upload():
     print(0)
-    db = pymysql.connect(user="root", passwd="qwe1357asd!", host="localhost", db="dailycafe", charset="utf8")
+    db = pymysql.connect(user="root", passwd=f'{pwd}', host="localhost", db="dailycafe", charset="utf8")
     cur = db.cursor(pymysql.cursors.DictCursor)
     print(1)
     now = datetime.now()
