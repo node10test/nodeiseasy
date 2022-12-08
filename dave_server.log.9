@@ -1,4 +1,4 @@
-Exception on / [GET]
+Exception on /users/4 [GET]
 Traceback (most recent call last):
   File "C:\Users\kth23\AppData\Local\Programs\Python\Python38\lib\site-packages\flask\app.py", line 2525, in wsgi_app
     response = self.full_dispatch_request()
@@ -8,8 +8,8 @@ Traceback (most recent call last):
     rv = self.dispatch_request()
   File "C:\Users\kth23\AppData\Local\Programs\Python\Python38\lib\site-packages\flask\app.py", line 1796, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
-  File "C:\Users\kth23\OneDrive\문서\nodesoeasytest\app.py", line 40, in home
-    conn = pymysql.connect(host='localhost',
+  File "C:\Users\kth23\OneDrive\문서\nodesoeasytest\app.py", line 197, in get_users
+    db = pymysql.connect(user="root",
   File "C:\Users\kth23\AppData\Local\Programs\Python\Python38\lib\site-packages\pymysql\connections.py", line 353, in __init__
     self.connect()
   File "C:\Users\kth23\AppData\Local\Programs\Python\Python38\lib\site-packages\pymysql\connections.py", line 633, in connect

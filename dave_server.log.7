@@ -1,0 +1,13 @@
+Exception on /post [GET]
+Traceback (most recent call last):
+  File "C:\Users\kth23\AppData\Local\Programs\Python\Python38\lib\site-packages\flask\app.py", line 2525, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\kth23\AppData\Local\Programs\Python\Python38\lib\site-packages\flask\app.py", line 1822, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\kth23\AppData\Local\Programs\Python\Python38\lib\site-packages\flask\app.py", line 1820, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\kth23\AppData\Local\Programs\Python\Python38\lib\site-packages\flask\app.py", line 1796, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+  File "C:\Users\kth23\OneDrive\¹®¼­\nodesoeasytest\app.py", line 307, in post
+    conn = connectsql()
+TypeError: 'module' object is not callable

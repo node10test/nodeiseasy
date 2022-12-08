@@ -1,3 +1,4 @@
+import ConnectSQl as connectsql
 from flask import Flask, render_template, request, session, redirect, url_for, jsonify, flash
 import pymysql
 import bcrypt
@@ -10,23 +11,77 @@ import math
 app = Flask(__name__)
 app.secret_key = 'any random string'
 
-conn = pymysql.connect(host='localhost',
-                       user='root',
-                       password='1231234',
-                       db='user',
-                       charset='utf8')
-cur = conn.cursor()
+if not app.debug:
+    # 즉 debug=true면 이는 false로서 아래 함수가 돌아간다.
+    # 실제 상용화단계에서 로깅을 진행해라는 의미이다
+    import logging
+    from logging.handlers import RotatingFileHandler
+
+    # logging 핸들러에서 사용할 핸들러를 불러온다.
+    file_handler = RotatingFileHandler(
+        'dave_server.log', maxBytes=2000, backupCount=10)
+    file_handler.setLevel(logging.WARNING)
+    # 어느 단계까지 로깅을 할지를 적어줌
+    # app.logger.addHandler() 에 등록시켜줘야 app.logger 로 사용 가능
+    app.logger.addHandler(file_handler)
 
 
-@app.route('/home')
+@app.errorhandler(404)
+def page_not_found(error):
+    asctime = datetime.datetime.now()
+    app.logger.error(f'시간:{asctime}/이것은 중요한 에러입니다. page_not_found에서 일어났습니다.')
+    return "<h1>해당 경로에 맞는 웹페이지가 없습니다. 문제가 지속되면, 죄송하지만 관리자에게 연락해주세요</h1>", 404
+
+
+@app.route('/')
 def home():
-    if 'email' not in session:
-        email = None
-        name = None
-        flash('로그인 하세요!')
-        return render_template('register.html', email=email, name=name)
+    # rand() 배치를 무작위로
+    # data return일경우 자료 하나하나, result return 일경우 자료 뭉치
+    conn = pymysql.connect(host='localhost',
+                           user='root',
+                           password='3d720307',
+                           db='dailycafe',
+                           charset='utf8')
+    sql = "SELECT * FROM cafelist ORDER BY rand() LIMIT 4"
 
-    return render_template('login.html', email=session['email'], name=session['name'])
+    with conn:
+        with conn.cursor() as cur:
+            cur.execute(sql)
+            result = cur.fetchall()
+            for data in result:
+                print(data)
+    return render_template('index.html', result=result)
+
+
+@app.route("/searchdata", methods=["POST", "GET"])
+def searchdata():
+    conn = pymysql.connect(host='localhost',
+                           user='root',
+                           password='3d720307',
+                           db='dailycafe',
+                           charset='utf8')
+    if request.method == 'POST':
+        search_word = request.form['search_word']
+        query = "SELECT * from cafelist WHERE shopname LIKE '%{}%' ORDER BY idnumber DESC LIMIT 500".format(search_word)
+
+        with conn:
+            with conn.cursor(pymysql.cursors.DictCursor) as cur:
+                print(search_word)
+                cur.execute(query)
+                result = cur.fetchall()
+
+    return jsonify({'data': render_template('response.html', result=result)})
+
+
+# @app.route('/home')
+# def home():
+#     if 'email' not in session:
+#         email = None
+#         name = None
+#         flash('로그인 하세요!')
+#         return render_template('register.html', email=email, name=name)
+#
+#     return render_template('login.html', email=session['email'], name=session['name'])
 
 
 @app.route('/signup')
@@ -36,6 +91,12 @@ def signup():
 
 @app.route('/post/users', methods=['GET', 'POST'])
 def user_post():
+    conn = pymysql.connect(host='localhost',
+                           user='root',
+                           password='1231234',
+                           db='user',
+                           charset='utf8')
+    cur = conn.cursor()
     email = request.form['email']
     pass_word = request.form['password']
     b = bcrypt.hashpw(pass_word.encode('utf-8'), bcrypt.gensalt())
@@ -59,15 +120,21 @@ def user_post():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    conn = pymysql.connect(host='localhost',
+                           user='root',
+                           password='1231234',
+                           db='user',
+                           charset='utf8')
+    cur = conn.cursor()
     msg = ''
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password'].encode('utf-8')
 
-        curs = conn.cursor(pymysql.cursors.DictCursor)
-        curs.execute('SELECT * FROM users WHERE email = %s', (email,))
-        user = curs.fetchone()
-        curs.close()
+        cur = conn.cursor(pymysql.cursors.DictCursor)
+        cur.execute('SELECT * FROM users WHERE email = %s', (email,))
+        user = cur.fetchone()
+        cur.close()
         print(user)
         print(password)
         print(bcrypt.hashpw(password, user['password'].encode('utf-8')))
@@ -97,78 +164,19 @@ def logout():
     session.clear()
     return render_template('home.html')
 
-#위 TK 아래 태현
-
-if not app.debug:
-    # 즉 debug=true면 이는 false로서 아래 함수가 돌아간다.
-    # 실제 상용화단계에서 로깅을 진행해라는 의미이다
-    import logging
-    from logging.handlers import RotatingFileHandler
-    # logging 핸들러에서 사용할 핸들러를 불러온다.
-    file_handler = RotatingFileHandler(
-        'dave_server.log', maxBytes=2000, backupCount=10)
-    file_handler.setLevel(logging.WARNING)
-    # 어느 단계까지 로깅을 할지를 적어줌
-    # app.logger.addHandler() 에 등록시켜줘야 app.logger 로 사용 가능
-    app.logger.addHandler(file_handler)
-
-@app.errorhandler(404)
-def page_not_found(error):
-    asctime = datetime.datetime.now()
-    app.logger.error(f'시간:{asctime}/이것은 중요한 에러입니다. page_not_found에서 일어났습니다.')
-    return "<h1>해당 경로에 맞는 웹페이지가 없습니다. 문제가 지속되면, 죄송하지만 관리자에게 연락해주세요</h1>", 404
-
-@app.route('/')
-def home():
-
-    # rand() 배치를 무작위로
-    # data return일경우 자료 하나하나, result return 일경우 자료 뭉치
-    conn = pymysql.connect(host='localhost',
-                           user='root',
-                           password='3d720307',
-                           db='dailycafe',
-                           charset='utf8')
-    sql = "SELECT * FROM cafelist ORDER BY rand() LIMIT 4"
-
-    with conn:
-        with conn.cursor() as cur:
-            cur.execute(sql)
-            result = cur.fetchall()
-            for data in result:
-                print(data)
-    return render_template('index.html', result=result)
-
-
-@app.route("/searchdata",methods=["POST","GET"])
-def searchdata():
-    conn = pymysql.connect(host='localhost',
-                           user='root',
-                           password='3d720307',
-                           db='dailycafe',
-                           charset='utf8')
-    if request.method == 'POST':
-        search_word = request.form['search_word']
-        query = "SELECT * from cafelist WHERE shopname LIKE '%{}%' ORDER BY idnumber DESC LIMIT 500".format(search_word)
-
-        with conn:
-            with conn.cursor(pymysql.cursors.DictCursor) as cur:
-                print(search_word)
-                cur.execute(query)
-                result = cur.fetchall()
-
-    return jsonify({'data': render_template('response.html', result = result)})
-
-
 
 UPLOAD_FOLDER = 'static/img'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
-app = Flask(__name__)
+# app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER  # flash 사용
-app.config["SECRET_KEY"] = "1234"
 
-db = pymysql.connect(user="root", passwd="qwe1357asd!", host="localhost", db="dailycafe", charset="utf8")
-curs = db.cursor()
+
+# app.config["SECRET_KEY"] = "1234"
+
+
+# db = pymysql.connect(user="root", passwd="qwe1357asd!", host="localhost", db="dailycafe", charset="utf8")
+# curs = db.cursor()
 
 # @app.route('/')
 # def home():
@@ -178,9 +186,11 @@ curs = db.cursor()
 def my_page():
     return render_template('my_page.html')
 
+
 @app.route('/edit_page')
 def edit_page():
     return render_template('edit_page.html')
+
 
 @app.route('/users/<id>', methods=['GET'])
 def get_users(id):
@@ -235,9 +245,13 @@ def post_users(id):
     # return jsonify({'msg': '수정이 완료되었습니다'}), 200
 
     # 파일 업로드
+
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
 @app.route("/upload", methods=['GET', 'POST'])
 def upload():
     print(0)
@@ -252,20 +266,16 @@ def upload():
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                cur.execute("INSERT INTO images (file_name,upload_time) VALUES (%s,%s)", [filename,now])
+                cur.execute("INSERT INTO images (file_name,upload_time) VALUES (%s,%s)", [filename, now])
                 db.commit()
             print(file)
         db.close()
         flash('사진이 성공적으로 업로드 되었어요!')
     return redirect('/edit_page')
 
-if __name__ == '__main__':
-    app.run('0.0.0.0', port=5000, debug=True)
-
 
 # from flask import Flask, render_template, session, url_for, request, redirect
 # import pymysql
-
 
 
 # def connectsql():
@@ -303,8 +313,9 @@ def post():
     conn.close()
 
     return render_template('post.html', result=result, logininfo=username)
-# postlist=postlist
 
+
+# postlist=postlist
 
 
 @app.route('/post/content/<id>')
@@ -524,4 +535,3 @@ def write():
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
-

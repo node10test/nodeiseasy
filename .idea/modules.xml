@@ -2,15 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-<<<<<<< HEAD
-<<<<<<< HEAD
-      <module fileurl="file://$PROJECT_DIR$/.idea/오늘의카페.iml" filepath="$PROJECT_DIR$/.idea/오늘의카페.iml" />
-=======
-      <module fileurl="file://$PROJECT_DIR$/.idea/nodeiseasy.iml" filepath="$PROJECT_DIR$/.idea/nodeiseasy.iml" />
->>>>>>> cafepj/mainpage
-=======
-      <module fileurl="file://$PROJECT_DIR$/.idea/nodeiseasy.iml" filepath="$PROJECT_DIR$/.idea/nodeiseasy.iml" />
->>>>>>> cafepj/DG
+      <module fileurl="file://$PROJECT_DIR$/.idea/nodesoeasytest.iml" filepath="$PROJECT_DIR$/.idea/nodesoeasytest.iml" />
     </modules>
   </component>
 </project>

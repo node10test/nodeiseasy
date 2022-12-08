@@ -1,0 +1,28 @@
+Exception on /main [GET]
+Traceback (most recent call last):
+  File "C:\Users\kth23\AppData\Local\Programs\Python\Python38\lib\site-packages\flask\app.py", line 1820, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\kth23\AppData\Local\Programs\Python\Python38\lib\site-packages\flask\app.py", line 1785, in dispatch_request
+    self.raise_routing_exception(req)
+  File "C:\Users\kth23\AppData\Local\Programs\Python\Python38\lib\site-packages\flask\app.py", line 1767, in raise_routing_exception
+    raise request.routing_exception  # type: ignore
+  File "C:\Users\kth23\AppData\Local\Programs\Python\Python38\lib\site-packages\flask\ctx.py", line 351, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "C:\Users\kth23\AppData\Local\Programs\Python\Python38\lib\site-packages\werkzeug\routing\map.py", line 624, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\kth23\AppData\Local\Programs\Python\Python38\lib\site-packages\flask\app.py", line 2525, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\kth23\AppData\Local\Programs\Python\Python38\lib\site-packages\flask\app.py", line 1822, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\kth23\AppData\Local\Programs\Python\Python38\lib\site-packages\flask\app.py", line 1666, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "C:\Users\kth23\AppData\Local\Programs\Python\Python38\lib\site-packages\flask\app.py", line 1606, in handle_http_exception
+    return self.ensure_sync(handler)(e)
+  File "C:\Users\kth23\OneDrive\¹®¼­\nodesoeasytest\app.py", line 31, in page_not_found
+    asctime = datetime.datetime.now()
+AttributeError: type object 'datetime.datetime' has no attribute 'datetime'
