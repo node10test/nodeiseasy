@@ -15,7 +15,6 @@ app.config["SECRET_KEY"] = "1234"
 db = pymysql.connect(user="root", passwd="qwe1357asd!", host="localhost", db="dailycafe", charset="utf8")
 curs = db.cursor()
 
-
 @app.route('/')
 def home():
     return redirect('/my_page')
@@ -38,7 +37,7 @@ def get_users(id):
     # connection 으로부터 cursor(fetch 역할) 생성
     curs = db.cursor()
     # 쿼리문 작성
-    sql = '''SELECT `name`,`desc` FROM `user` AS u WHERE u.id = %s'''
+    sql = '''SELECT `name`,`desc` FROM `users` AS u WHERE u.id = %s'''
 
     # 쿼리 실행
     curs.execute(sql, id)
@@ -67,7 +66,7 @@ def post_users(id):
     name_receive = request.form['name']
     desc_receive = request.form['desc']
 
-    sql = '''UPDATE `user` SET name=%s, `desc`=%s  WHERE id=%s;'''
+    sql = '''UPDATE `users` SET name=%s, `desc`=%s  WHERE id=%s;'''
 
     curs.execute(sql, (name_receive, desc_receive, id))
 
