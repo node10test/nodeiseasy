@@ -10,7 +10,7 @@ from flask_paginate import Pagination, get_page_args, get_page_parameter
 mysqluser = "root"
 mysqldb = "dailycafe"
 host = "localhost"
-pwd = "3d720307"
+pwd = "qwe1357asd!"
 
 app = Flask(__name__)
 app.secret_key = 'any random string'
