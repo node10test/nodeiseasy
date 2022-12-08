@@ -1,11 +1,10 @@
-import datetime
 import ConnectSQl as connectsql
 from flask import Flask, render_template, request, session, redirect, url_for, jsonify, flash
 import pymysql
 import bcrypt
 import os
 from werkzeug.utils import secure_filename
-from datetime import datetime
+import datetime
 from flask_paginate import Pagination, get_page_args, get_page_parameter
 #db 정보에 대한 변수(f스트링으로 받음)
 mysqluser = "root"
