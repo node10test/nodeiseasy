@@ -1,0 +1,73 @@
+@font-face {
+    font-family: 'Cafe24Oneprettynight';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.1/Cafe24Oneprettynight.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    font-family: Cafe24Oneprettynight, sans-serif;
+}
+.whole {
+    box-shadow: 0px 0px 3px 0px gray;
+    width: 50%;
+    height: 33rem;
+    margin-left: 20rem;
+    margin-top: 1rem;
+    padding-top: 2rem;
+    padding-left: 2rem;
+}
+.myphoto {
+    box-shadow: 0px 0px 3px 0px gray;
+    text-align: center;
+    width: 25rem;
+    height: 10rem;
+    margin-left: 5rem;
+    margin-bottom: 2rem;
+}
+.d0 {
+    display: flex;
+    height: 2rem;
+    margin-bottom: 1rem;
+}
+.a0 {
+    width: 10rem;
+    flex-grow: 1;
+}
+.d1 {
+    display: flex;
+    height: 2rem;
+    margin-bottom: 1rem;
+    margin-left: 4rem;
+}
+.a1 {
+    width: 10rem;
+    flex-grow: 1;
+    text-align: center;
+}
+.d2 {
+    display: flex;
+    height: 2rem;
+    margin-bottom: 1rem;
+    margin-left: 4rem;
+}
+.a2 {
+    width: 10rem;
+    flex-grow: 1;
+    text-align: center;
+}
+.d3 {
+    display: flex;
+    height: 2rem;
+    margin-bottom: 1rem;
+}
+.a3 {
+    width: 10rem;
+    flex-grow: 1;
+}
+.whole > button:hover {
+    border: 2px solid white;
+}
+.default_img {
+    background-image: url("../images/images.jpg");
+}

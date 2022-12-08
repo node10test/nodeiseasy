@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>마이페이지</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="../static/css/my_page.css">
+    <script src="{{ url_for('static', filename='js/my_page.js') }}"></script>
+</head>
+<body>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <script type="text/javascript">
+            alert("{{ messages[-1] }}");
+        </script>
+    {% endif %}
+    {% endwith %}
+
+    <div class="header">
+        오늘의 카페
+    </div>
+    <div class="myprofile">
+        <div class="myphoto">
+            <img src="../static/images/images.jpg" style="border-radius: 100%;" alt="user-image">
+        </div>
+        <div class="myinfo"></div>
+    </div>
+    <div class="images">
+          <div class="div0">
+            <div class="div1">
+                <div class="imgdiv"><img src="../static/images/cafe_1.png" onclick= alt="user-image"></div>
+                <div class="name">NNNC</div>
+            </div>
+          </div>
+        <div class="div0">
+            <div class="div2">
+                <div class="imgdiv"><img src="../static/images/cafe_2.jpg" alt="user-image"></div>
+                <div class="name">빈타이</div>
+            </div>
+        </div>
+        <div class="div0">
+            <div class="div3">
+                <div class="imgdiv"><img src="../static/images/cafe_3.jpg" alt="user-image"></div>
+                <div class="name">투썸플레이스</div>
+            </div>
+        </div>
+        <div class="div0">
+            <div class="div4">
+                <div class="imgdiv"><img src="../static/images/cafe_4.jpg" alt="user-image"></div>
+                <div class="name">북카페</div>
+            </div>
+        </div>
+        <div class="div0">
+            <div class="div5">
+                <div class="imgdiv"><img src="../static/images/cafe_5.jpg" alt="user-image"></div>
+                <div class="name">치치하하</div>
+            </div>
+        </div>
+        <div class="div0">
+            <div class="div6">
+                <div class="imgdiv"><img src="../static/images/cafe_6.jpg" alt="user-image"></div>
+                <div class="name">할리스커피</div>
+            </div>
+        </div>
+        <div class="div0">
+            <div class="div7">
+                <div class="imgdiv"><img src="../static/images/cafe_7.jpg" alt="user-image"></div>
+                <div class="name">스타벅스</div>
+            </div>
+        </div>
+        <div class="div0">
+            <div class="div8">
+                <div class="imgdiv"><img src="../static/images/cafe_8.jpg" alt="user-image"></div>
+                <div class="name">투썸플레이스</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

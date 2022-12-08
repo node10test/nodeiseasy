@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>프로필 수정</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="{{ url_for('static', filename='css/edit_page.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='js/edit_page.js') }}"></script>
+</head>
+<body>
+    <div class="myinfo">
+        <div>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <script type="text/javascript">
+            alert("{{ message }}");
+        </script>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+    </div>
+    <script>
+        function test() {
+            let 파일 = document.querySelector('#fileInput').files;
+            let url = URL.createObjectURL(파일[0]);
+            document.querySelector('#ex').src = url;
+        }
+    </script>
+</body>
+</html>
