@@ -1,0 +1,28 @@
+@font-face {
+    font-family: 'Cafe24Oneprettynight';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.1/Cafe24Oneprettynight.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+  font-family: Cafe24Oneprettynight, sans-serif;
+      box-sizing: border-box;
+    margin: 0;
+  padding: 0;
+}
+  table, th, td {
+    border: 1px solid #bcbcbc;
+      border-collapse : collapse;
+  }
+
+table{
+    width: 900px;
+}
+td{
+    text-align: center;
+
+}
+tr{
+    text-align: center;
+}

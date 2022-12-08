@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/.idea/오늘의카페.iml" filepath="$PROJECT_DIR$/.idea/오늘의카페.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/.idea/nodeiseasy.iml" filepath="$PROJECT_DIR$/.idea/nodeiseasy.iml" />
+>>>>>>> cafepj/mainpage
     </modules>
   </component>
 </project>
