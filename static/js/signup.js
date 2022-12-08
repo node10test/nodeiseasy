@@ -69,7 +69,7 @@ function signUpCheck(){
     //type: 'form 태그의 method 속성(post 또는 get)',
     //data: {"변수1": "변수1의 값", "변수2": "변수2의 값"},
     $.ajax({
-    url: '/user',
+    url: '/post/users',
     type: 'POST',
     data: {'email':email, 'name':name, 'password':password},
     success: function () {

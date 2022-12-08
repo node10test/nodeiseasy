@@ -14,7 +14,7 @@ cur = conn.cursor()
 
 
 # 데이터 보내주기, 완료시 로그인페이지로 이동 by TK
-@app.route('/user', methods=['GET', 'POST'])
+@app.route('/post/users', methods=['GET', 'POST'])
 def user_post():
     email = request.form['email']
     pass_word = request.form['password']
