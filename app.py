@@ -1,15 +1,15 @@
 import math
 
-from flask import Flask, render_template, session, url_for, request, redirect
-import pymysql
+# from flask import Flask, render_template, session, url_for, request, redirect
+# import pymysql
 
-app = Flask(__name__)
-app.secret_key = 'sample_secret'
+# app = Flask(__name__)
+# app.secret_key = 'sample_secret'
 
 
-def connectsql():
-    conn = pymysql.connect(host='localhost', user='root', passwd='skyboy6612@', db='for_user', charset='utf8')
-    return conn
+# def connectsql():
+#     conn = pymysql.connect(host='localhost', user='root', passwd='skyboy6612@', db='for_user', charset='utf8')
+#     return conn
 
 #
 # @app.route('/')
