@@ -190,9 +190,8 @@ def login():
             if bcrypt.hashpw(password, user['password'].encode('utf-8')) == user['password'].encode('utf-8'):
                 print(2)
                 session['email'] = user['email']
-                # session['email'] = user['email']
                 print(session.get('email'))
-                return render_template('home.html')
+                return render_template('index.html', result=result)
             else:
                 msg = '이메일 또는 비밀번호를 확인해주세요'
                 return render_template('login.html', msg=msg)
@@ -229,8 +228,12 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER  # flash 사용
 
 @app.route('/my_page')
 def my_page():
-    return render_template('my_page.html')
-
+    if 'username' in session:
+        username = session['username']
+        return render_template('my_page.html', logininfo=username)
+    else:
+        username = None
+        return render_template('login.html', logininfo=username)
 
 @app.route('/edit_page')
 def edit_page():
