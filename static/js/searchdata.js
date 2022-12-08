@@ -5,9 +5,9 @@ $(function() {
       if(search_word==''){
       }else{
         $.ajax({
-          type: "POST",
-          url: "/searchdata",
-          data: dataString,
+          type: "GET",
+          url: `/searchdata?search_word=${search_word}`,
+          // data: dataString,
           cache: false,
           beforeSend: function(html) {
               document.getElementById("insert_search").innerHTML = '';
