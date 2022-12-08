@@ -12,7 +12,8 @@ import math
 
 app = Flask(__name__)
 app.secret_key = 'any random string'
-
+#db 암호 여기서 쓰세요
+pwd = "3d720307"
 if not app.debug:
     # 즉 debug=true면 이는 false로서 아래 함수가 돌아간다.
     # 실제 상용화단계에서 로깅을 진행해라는 의미이다
@@ -37,11 +38,12 @@ def page_not_found(error):
 
 @app.route('/')
 def home():
+
     # rand() 배치를 무작위로
     # data return일경우 자료 하나하나, result return 일경우 자료 뭉치
     conn = pymysql.connect(host='localhost',
                            user='root',
-                           password='3d720307',
+                           password=f'{pwd}',
                            db='dailycafe',
                            charset='utf8')
     sql = "SELECT * FROM cafelist ORDER BY rand() LIMIT 4"
@@ -59,7 +61,7 @@ def home():
 def searchdata():
     conn = pymysql.connect(host='localhost',
                            user='root',
-                           password='3d720307',
+                           password=f'{pwd}',
                            db='dailycafe',
                            charset='utf8')
     if request.method == 'POST':
@@ -95,7 +97,7 @@ def signup():
 def user_post():
     conn = pymysql.connect(host='localhost',
                            user='root',
-                           password='3d720307',
+                           password=f'{pwd}',
                            db='dailycafe',
                            charset='utf8')
     cur = conn.cursor()
@@ -124,7 +126,7 @@ def user_post():
 def login():
     conn = pymysql.connect(host='localhost',
                            user='root',
-                           password='3d720307',
+                           password=f'{pwd}',
                            db='dailycafe',
                            charset='utf8')
     cur = conn.cursor()
@@ -197,7 +199,7 @@ def edit_page():
 @app.route('/users/<id>', methods=['GET'])
 def get_users(id):
     db = pymysql.connect(user="root",
-                         passwd="3d720307",
+                         passwd=f'{pwd}',
                          host="localhost",
                          db="dailycafe",
                          charset="utf8")
@@ -257,7 +259,7 @@ def allowed_file(filename):
 @app.route("/upload", methods=['GET', 'POST'])
 def upload():
     print(0)
-    db = pymysql.connect(user="root", passwd="3d720307", host="localhost", db="dailycafe", charset="utf8")
+    db = pymysql.connect(user="root", passwd=f'{pwd}', host="localhost", db="dailycafe", charset="utf8")
     cur = db.cursor(pymysql.cursors.DictCursor)
     print(1)
     now = datetime.now()
