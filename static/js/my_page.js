@@ -17,7 +17,7 @@ $(document).ready(function () {
                                           ${desc}
                                      </div>
                                     <div class="rewrite">
-                                        <button type="button" class="btn btn-outline-dark"><a href="/edit">프로필 수정</a></button>                                       
+                                        <button type="button" class="btn btn-outline-dark"><a href="/edit_page">프로필 수정</a></button>                                       
                                     </div>`
                 $('.myinfo').append(temp_html)
             }

@@ -4,22 +4,23 @@
     <meta charset="UTF-8">
     <title>프로필 수정</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="../static/css/edit_page.css">
-    <script src="../static/javascript/edit_page.js"></script>
+    <link href="{{ url_for('static', filename='css/edit_page.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='js/edit_page.js') }}"></script>
 </head>
 <body>
-    <div>
+    <div class="myinfo">
+        <div>
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         {% for message in messages %}
-        <div class="alert alert-success">
-            <strong>{{ message }}</strong>
-        </div>
+        <script type="text/javascript">
+            alert("{{ message }}");
+        </script>
         {% endfor %}
         {% endif %}
         {% endwith %}
     </div>
-    <div class="myinfo"></div>
+    </div>
     <script>
         function test() {
             let 파일 = document.querySelector('#fileInput').files;

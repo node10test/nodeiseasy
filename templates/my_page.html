@@ -5,7 +5,7 @@
     <title>마이페이지</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="../static/css/my_page.css">
-    <script src="../static/javascript/my_page.js"></script>
+    <script src="{{ url_for('static', filename='js/my_page.js') }}"></script>
 </head>
 <body>
     {% with messages = get_flashed_messages() %}
@@ -21,7 +21,7 @@
     </div>
     <div class="myprofile">
         <div class="myphoto">
-            <img src="../static/images/images.png" style="border-radius: 100%;" alt="user-image">
+            <img src="../static/images/images.jpg" style="border-radius: 100%;" alt="user-image">
         </div>
         <div class="myinfo"></div>
     </div>

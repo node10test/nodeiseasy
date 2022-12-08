@@ -8,18 +8,17 @@ $(document).ready(function () {
             const rows = response["users"]
             let name = rows['name']
             let desc = rows["desc"]
-            let temp_html = `<form method="post" action="/users/${id}" >
-                                    <div class="whole">
-                                        <div class="myprofile">
-                                           <form method="post" action="/upload" enctype="multipart/form-data" class="form-inline">
-                                                <div class="form-group">
-                                                    <label>Choose Images: </label>
-                                                    <input type="file" name="files[]" id="fileInput" onchange="test()" class="form-control" multiple>
-                                                    <img src="" id="ex">
-                                                </div>
-                                                <input type="submit" name="submit" class="btn btn-success" value="UPLOAD"/>
-                                           </form>
-                                        </div>        
+            let temp_html = `<div class="whole">
+                                    <div class="myprofile">
+                                        <form method="post" action="/upload" enctype="multipart/form-data" class="form-inline">
+                                            <div class="form-group">
+                                                <input type="file" name="files[]" id="fileInput" onchange="test()" class="form-control">
+                                                <img class="default_img" id="ex" style="width: 36%; height: 15rem;">
+                                            </div>
+                                            <input type="submit" name="submit" class="btn btn-success" value="UPLOAD"/>
+                                       </form>
+                                    </div>   
+                                    <form method="post" action="/users/${id}">     
                                         <div class="d1">
                                             <div class="a1">아이디</div>
                                             <div class="form-floating mb-3" style="flex-grow: 2; ">
@@ -28,18 +27,20 @@ $(document).ready(function () {
                                         </div>
                                         <div class="d2">
                                             <div class="a2">소개</div>
-                                            <div class="form-floating mb-3" style="flex-grow: 2;">
+                                            <div class="form-floating mb-3" style="flex-grow: 2; height: 10rem;">
                                                 <input type="id" class="form-control" id="id" name="desc" placeholder="${desc}">
                                             </div>
                                         </div>
-                                        <a href='/static'>
+                                        <a href='/my_page'>
                                             <button style="margin-left: 15rem"><input type="submit" value="수정하기"></button>
                                         </a>
-                                        <a href='/static'>
+                                        <a href='/my_page'>
                                             <button type="button" class="btn btn-dark" style="margin-left: 1rem">닫기</button>
                                         </a>
-                                    </div>
-                                </form>`
+                                    </form>
+                            </div>
+                                
+                                `
             $('.myinfo').append(temp_html)
         }
     })
@@ -61,7 +62,7 @@ $(document).ready(function () {
                     alert('Please select a valid image file (JPEG/JPG/PNG/GIF).');
                     $("#fileInput").val('');
                     console.log(fileLength)
-                    window.location.href = "/"
+                    window.location.href = "/my_page"
                     return false;
 
                 }
