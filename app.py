@@ -10,12 +10,10 @@ from flask_paginate import Pagination, get_page_args, get_page_parameter
 mysqluser = "root"
 mysqldb = "dailycafe"
 host = "localhost"
-pwd = "3d720307"
+pwd = "12345"
 
 app = Flask(__name__)
 app.secret_key = 'any random string'
-
-
 
 if not app.debug:
     # 즉 debug=true면 이는 false로서 아래 함수가 돌아간다.
@@ -189,9 +187,15 @@ def login():
             if bcrypt.hashpw(password, user['password'].encode('utf-8')) == user['password'].encode('utf-8'):
                 print(2)
                 session['email'] = user['email']
-                # session['email'] = user['email']
                 print(session.get('email'))
-                return render_template('home.html')
+                sql = "SELECT * FROM cafelist ORDER BY rand() LIMIT 4"
+                with conn:
+                    with conn.cursor() as cur:
+                        cur.execute(sql)
+                        result = cur.fetchall()
+                        for data in result:
+                            print(data)
+                return render_template('index.html', result=result)
             else:
                 msg = '이메일 또는 비밀번호를 확인해주세요'
                 return render_template('login.html', msg=msg)
@@ -206,8 +210,24 @@ def login():
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     session.clear()
-    return render_template('home.html')
-
+    conn = pymysql.connect(host=f'{host}',
+                           user=f'{mysqluser}',
+                           password=f'{pwd}',
+                           db=f'{mysqldb}',
+                           charset='utf8')
+    cur = conn.cursor()
+    sql = "SELECT * FROM cafelist ORDER BY rand() LIMIT 4"
+    with conn:
+        with conn.cursor() as cur:
+            cur.execute(sql)
+            result = cur.fetchall()
+            for data in result:
+                print(data)
+    return render_template('index.html', result=result)
+# @app.route('/logout')
+# def logout():
+#     session.pop('email', None)
+#     return redirect('/')
 
 UPLOAD_FOLDER = 'static/img'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
@@ -228,8 +248,12 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER  # flash 사용
 
 @app.route('/my_page')
 def my_page():
-    return render_template('my_page.html')
-
+    if 'email' in session:
+        email = session['email']
+        return render_template('my_page.html')
+    else:
+        email = None
+        return render_template('login.html')
 
 @app.route('/edit_page')
 def edit_page():
@@ -338,22 +362,25 @@ def connectsql():
 # @app.route('/')
 # # 세션유지를 통한 로그인 유무 확인
 # def index():
-#     if 'username' in session:
-#         username = session['username']
+#     if 'email' in session:
+#         email = session['email']
 #
-#         return render_template('index.html', logininfo=username)
+#         return render_template('index.html', logininfo=email)
 #     else:
-#         username = None
-#         return render_template('index.html', logininfo=username)
+#         email = None
+#         return render_template('index.html', logininfo=email)
 
 
 @app.route('/post')
 # board테이블의 게시판 제목리스트 역순으로 출력
 def post():
-    if 'username' in session:
-        username = session['username']
+    if 'email' in session:
+        email = session['email']
+        return render_template('post.html')
     else:
-        username = None
+        email = None
+        return render_template('login.html')
+
     conn = connectsql()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
     query = "SELECT id, name, title, wdate, view FROM board ORDER BY id DESC"  # ORDER BY 컬럼명 DESC : 역순출력, ASC : 순차출력
@@ -364,7 +391,7 @@ def post():
     cursor.close()
     conn.close()
 
-    return render_template('post.html', result=result, logininfo=username)
+    return render_template('post.html', result=result, logininfo=email)
 
 
 # postlist=postlist
@@ -373,8 +400,8 @@ def post():
 @app.route('/post/content/<id>')
 # 조회수 증가, post페이지의 게시글 클릭시 id와 content 비교 후 게시글 내용 출력
 def content(id):
-    if 'username' in session:
-        username = session['username']
+    if 'email' in session:
+        email = session['email']
         conn = connectsql()
         cursor = conn.cursor()
         query = "UPDATE board SET view = view + 1 WHERE id = %s"
@@ -393,18 +420,18 @@ def content(id):
         conn.commit()
         cursor.close()
         conn.close()
-        return render_template('content.html', data=content, username=username)
+        return render_template('content.html', data=content, email=email)
     else:
         return render_template('Error.html')
 
 
 @app.route('/post/edit/<id>', methods=['GET', 'POST'])
-# GET -> 유지되고있는 username 세션과 현재 접속되어진 id와 일치시 edit페이지 연결
+# GET -> 유지되고있는 email 세션과 현재 접속되어진 id와 일치시 edit페이지 연결
 # POST -> 접속되어진 id와 일치하는 title, content를 찾아 UPDATE
 def edit(id):
     if request.method == 'POST':
-        if 'username' in session:
-            username = session['username']
+        if 'email' in session:
+            email = session['email']
 
             edittitle = request.form['title']
             editcontent = request.form['content']
@@ -420,8 +447,8 @@ def edit(id):
 
             return render_template('editSuccess.html')
     else:
-        if 'username' in session:
-            username = session['username']
+        if 'email' in session:
+            email = session['email']
             conn = connectsql()
             cursor = conn.cursor()
             query = "SELECT name FROM board WHERE id = %s"
@@ -431,7 +458,7 @@ def edit(id):
             cursor.close()
             conn.close()
 
-            if username in data:
+            if email in data:
                 conn = connectsql()
                 cursor = conn.cursor(pymysql.cursors.DictCursor)
                 query = "SELECT id, title, content FROM board WHERE id = %s"
@@ -440,7 +467,7 @@ def edit(id):
                 postdata = cursor.fetchall()
                 cursor.close()
                 conn.close()
-                return render_template('edit.html', data=postdata, logininfo=username)
+                return render_template('edit.html', data=postdata, logininfo=email)
             else:
                 return render_template('editError.html')
         else:
@@ -448,10 +475,10 @@ def edit(id):
 
 
 @app.route('/post/delete/<id>')
-# 유지되고 있는 username 세션과 id 일치시 삭제확인 팝업 연결
+# 유지되고 있는 email 세션과 id 일치시 삭제확인 팝업 연결
 def delete(id):
-    if 'username' in session:
-        username = session['username']
+    if 'email' in session:
+        email = session['email']
         conn = connectsql()
         cursor = conn.cursor()
         query = "SELECT name FROM board WHERE id = %s"
@@ -461,7 +488,7 @@ def delete(id):
         cursor.close()
         conn.close()
 
-        if username in data:
+        if email in data:
             return render_template('delete.html', id=id)
         else:
             return render_template('editError.html')
@@ -486,40 +513,38 @@ def deletesuccess(id):
 
 @app.route('/write', methods=['GET', 'POST'])
 # GET -> write 페이지 연결
-# POST -> username, password를 세션으로 불러온 후, form에 작성되어진 title, content를 테이블에 입력
+# POST -> email, password를 세션으로 불러온 후, form에 작성되어진 title, content를 테이블에 입력
 def write():
     if request.method == 'POST':
-        if 'username' in session:
-            username = session['username']
-            password = session['password']
-
+        if 'email' in session:
+            email = session['email']
             usertitle = request.form['title']
             usercontent = request.form['content']
 
             conn = connectsql()
             cursor = conn.cursor()
-            query = "INSERT INTO board (name, pass, title, content) values (%s, %s, %s, %s)"
-            value = (username, password, usertitle, usercontent)
-            cursor.execute(query, value)
+            query = f"INSERT INTO board(title, content, name) values (%s, %s, '%{email}%')"
+            value = (email, usertitle, usercontent)
+            # print(email, usertitle, usercontent)
+            cursor.execute(query)
             conn.commit()
             cursor.close()
             conn.close()
-
             return redirect(url_for('post'))
         else:
-            return render_template('errorpage.html')
+            return render_template('error.html')
     else:
-        if 'username' in session:
-            username = session['username']
-            return render_template('write.html', logininfo=username)
+        if 'email' in session:
+            email = session['email']
+            return render_template('write.html', logininfo=email)
         else:
-            return render_template('Error.html')
+            return render_template('error.html')
 
 
 # @app.route('/logout')
-# # username 세션 해제
+# # email 세션 해제
 # def logout():
-#     session.pop('username', None)
+#     session.pop('email', None)
 #     return redirect(url_for('index'))
 #
 #
@@ -545,7 +570,7 @@ def write():
 #             data = row[0]
 #
 #         if data:
-#             session['username'] = request.form['id']
+#             session['email'] = request.form['id']
 #             session['password'] = request.form['pw']
 #             return render_template('index.html', logininfo=logininfo)
 #         else:

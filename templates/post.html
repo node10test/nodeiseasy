@@ -16,6 +16,23 @@
 	</head>
     <body style="font-size: none">
 
+    {% if session.get('email') is not none %}
+    <nav>
+        <span class="spanmenu"><a href="/signup">회원가입</a></span>
+        <span class="spanmenu"><a href="/login">로그아웃</a></span>
+        <span class="spanmenu"><a href="/my_page">마이 페이지</a></span>
+        <span class="spanmenu"><a href="/post">커뮤니티</a></span>
+    </nav>
+    {% else %}
+        <nav>
+        <span class="spanmenu"><a href="/signup">회원가입</a></span>
+        <span class="spanmenu"><a href="/login">로그인</a></span>
+        <span class="spanmenu"><a href="/my_page">마이 페이지</a></span>
+        <span class="spanmenu"><a href="/post">커뮤니티</a></span>
+    </nav>
+    {% endif %}
+    </header>
+
     <div class="board_wrap">
         <div class="board_title">
             <strong>Daily Cafe</strong>
@@ -101,14 +118,8 @@
 <!--                <a href="" class="bt last">>></a>-->
 <!--            </div>-->
             <div class="bt_wrap">
-                <button class="btn btn-dark btn-right" type="button" onclick="location.href='/'">HOME</button>
-                {% if logininfo %}
-                <button class="btn btn-dark btn-right" type="button" onclick="location.href='/logout'">로그아웃</button>
-                {% else %}
-                <button class="btn btn-dark btn-right" type="button" onclick="location.href='/login'">로그인</button>
-                {% endif %}
                 <button class="btn btn-dark btn-right" type="button" onclick="location.href='/write'">
-                    <strong>게시글쓰기</strong></button>
+                    <strong>게시글 쓰기</strong></button>
             </div>
         </div>
     </div>
