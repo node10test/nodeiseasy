@@ -1,7 +1,6 @@
 import datetime
 import ConnectSQl as connectsql
 from flask import Flask, render_template, request, session, redirect, url_for, jsonify, flash
-
 import pymysql
 import bcrypt
 import os
@@ -9,6 +8,9 @@ from werkzeug.utils import secure_filename
 import urllib.request
 from datetime import datetime
 import math
+from flask_paginate import Pagination, get_page_args, get_page_parameter
+from urllib.parse import urlsplit, parse_qsl
+
 
 app = Flask(__name__)
 app.secret_key = 'any random string'
@@ -39,10 +41,9 @@ def page_not_found(error):
 
 @app.route('/')
 def home():
-
     # rand() 배치를 무작위로
     # data return일경우 자료 하나하나, result return 일경우 자료 뭉치
-    conn = pymysql.connect(host='localhost',
+    conn = pymysql.connect(host='127.0.0.1',
                            user='root',
                            password=f'{pwd}',
                            db='dailycafe',
@@ -65,28 +66,67 @@ def searchdata():
                            password=f'{pwd}',
                            db='dailycafe',
                            charset='utf8')
-    if request.method == 'POST':
-        search_word = request.form['search_word']
-        query = "SELECT * from cafelist WHERE shopname LIKE '%{}%' ORDER BY idnumber DESC LIMIT 500".format(search_word)
-
+    if request.method == 'GET':
+        search_word = request.args['search_word']
+        pages = 0
+        if (request.args.getlist('page')):
+            pages = (int(request.args.getlist('page')[0]) - 1) * 10
+            print('page', pages)
         with conn:
-            with conn.cursor(pymysql.cursors.DictCursor) as cur:
-                print(search_word)
-                cur.execute(query)
-                result = cur.fetchall()
+            with conn.cursor(pymysql.cursors.DictCursor) as curs:
+                per_page = 10
+                page, _, offset = get_page_args(per_page=per_page)
+                # db = pymysql.connect(host='localhost', user='root', db='spartagram', password='12345678', charset='utf8')
+                curs.execute("SELECT * from cafelist WHERE shopname LIKE '%{}%' ORDER BY idnumber DESC;".format(search_word))
+                all_count = len(curs.fetchall())
+                print(all_count)
+                # '%{}%'을 쓰면서 %s로 변수를 받을께 있다!? = f스트링이 답이다
+                sql = f"SELECT * from cafelist WHERE shopname LIKE '%{search_word}%' ORDER BY idnumber DESC LIMIT {per_page} OFFSET {pages};"
+                print('sql', sql);
+                curs.execute(sql)
+                data_list = curs.fetchall()
+                print(data_list)
+                pagination = Pagination(page=page, per_page=per_page, total=all_count, record_name='searchdata',
+                                        css_framework='foundation', bs_version=5)
+                print("this is pagination", pagination)
+                check = False
+                return jsonify({'data': render_template('response.html', data_lists=data_list, pagination=pagination)})
 
-    return jsonify({'data': render_template('response.html', result=result)})
 
-
-# @app.route('/home')
-# def home():
-#     if 'email' not in session:
-#         email = None
-#         name = None
-#         flash('로그인 하세요!')
-#         return render_template('register.html', email=email, name=name)
-#
-#     return render_template('login.html', email=session['email'], name=session['name'])
+@app.route("/searchdata_auto", methods=["POST", "GET"])
+def searchdata_auto():
+    conn = pymysql.connect(host='localhost',
+                           user='root',
+                           password='3d720307',
+                           db='dailycafe',
+                           charset='utf8')
+    if request.method == 'GET':
+        search_word = request.args['search_word']
+        with conn:
+            with conn.cursor(pymysql.cursors.DictCursor) as curs:
+                per_page = 10
+                page, _, offset = get_page_args(per_page=per_page)
+                # db = pymysql.connect(host='localhost', user='root', db='dailycafe', password='3d720307', charset='utf8')
+                curs.execute("SELECT * from cafelist WHERE shopname LIKE '%{}%' ORDER BY 번호 DESC;".format(search_word))
+                all_count = len(curs.fetchall())
+                print(all_count)
+                # '%{}%'을 쓰면서 %s로 변수를 받을께 있다!? = f스트링이 답이다
+                sql = f"SELECT * from cafelist WHERE shopname LIKE '%{search_word}%' ORDER BY 번호 DESC LIMIT {per_page} OFFSET {offset};"
+                curs.execute(sql)
+                data_list = curs.fetchall()
+                print(data_list)
+                pagination = Pagination(page=page, per_page=per_page, total=all_count, record_name='searchdata',
+                                        css_framework='foundation', bs_version=5)
+                print("this is pagination", pagination)
+                check = False
+                # if page != None:
+                #     return jsonify({'data': render_template('response.html', data_lists=data_list, pagination=pagination)})
+                # else:
+                return jsonify({'data': render_template('response.html', data_lists=data_list, pagination=pagination)})
+                # if page ==1:
+                #     return jsonify({'data': render_template('response.html',data_lists=data_list, pagination=pagination)})
+                # else:
+                #     return render_template('response.html', data_lists=data_list, pagination=pagination)
 
 
 @app.route('/signup')

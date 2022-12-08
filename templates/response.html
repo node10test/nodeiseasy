@@ -1,44 +1,70 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <title>카페 검색 결과에요!</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-  </head>
-  <body>
-    <div>
-      <table id="example" class="table table-striped table-bordered" style="width:100%">
+<div id="pagination-body">
+    <table id="example" class="table table-striped table-bordered" style="width:100%">
         <thead>
-          <tr>
+        {{ pagination.info }}
+        <tr>
             <td>점포명</td>
             <td>전화번호</td>
             <td>(구)지번주소</td>
             <td>도로명주소</td>
-          </tr>
+        </tr>
         </thead>
         <tbody>
-          {% for row in result %}
-          <tr>
+        {% for row in data_lists %}
+        <tr>
             <td> {{row.shopname}}</td>
             <td>{{row.telnumber}}</td>
             <td>{{row.address}}</td>
               <td>{{row.newaddress}}</td>
-          </tr>
-          {% endfor %}
+        </tr>
+        {% endfor %}
+
         </tbody>
-      </table>
-    </div>
-  </div>
+    </table>
+    {{ pagination.links }}
 </div>
 
-    <script>
-      $(document).ready(function() {
-    $('#example').DataTable({
-      "aLengthMenu": [[5, 10, 15, 20,50, -1], [5, 10, 15, 25,50, "All"]],
-        "iDisplayLength": 5
-       }
-    );
-} );
+
+
+<script>
+    document.getElementById("pagination-body").addEventListener('click', function (e) {
+        if (e.target.tagName !== 'A') return;
+        e.preventDefault();
+        if (e.target.href) {
+            const getUrlParams = () => {
+                var params = {};
+                e.target.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,
+                    function (str, key, value) {
+                        params[key] = value;
+                    }
+                );
+                return params;
+            }
+            params = getUrlParams();
+            params.search_word = decodeURI(params.search_word);
+            console.log(params)
+            const search_word = params.search_word;
+            const page = e.target.text;
+
+            $.ajax({
+                type: "GET",
+                url: `/searchdata?search_word=${search_word}&page=${page}`,
+                // data: dataString,
+                cache: false,
+                beforeSend: function (html) {
+                    document.getElementById("insert_search").innerHTML = '';
+                    $("#flash").show();
+                    $("#searchword").show();
+                    $(".searchword").html(search_word);
+                    $("#flash").html('<img src="/static/image/loader.gif" align="absmiddle"> Loading Results...');
+                },
+                success: function (html) {
+                    $("#insert_search").show();
+                    $("#insert_search").append(html.data);
+                    $("#flash").hide();
+                }
+            });
+        }
+    })
+
 </script>
-</body>
