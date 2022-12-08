@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maxinum-scale=1, user-scalable=no">
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.6/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+
+        <link rel="stylesheet" href="/static/css/style.css">
+
+		<title>post page</title>
+	</head>
+    <body style="font-size: none">
+
+    <div class="board_wrap">
+        <div class="board_title">
+            <strong>Daily Cafe</strong>
+            <p>information only they know</p>
+        </div>
+            <div class="post_list">
+                <table id="example" class="table table-striped table-bordered" style="width:100%">
+                    <thead class="top">
+                    <tr class="nums">
+                        <td class="num">번호</td>
+                        <td class="title">제목</td>
+                        <td class="wirter">글쓴이</td>
+                        <td class="wdate">작성일</td>
+                        <td class="view">조회</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for row in result %}
+                    <tr class="nums">
+                        <td class="num"> {{ row.id }}</td>
+                        <td class="title"> <a style="color:#110957;" href="/post/content/{{ row.id }}">{{ row.title }}</a> </td>
+                        <td class="wirter"> {{ row.name }}</td>
+                        <td class="wdate"> {{ row.wdate }}</td>
+                        <td class="view"> {{ row.view }}</td>
+<!--                        <td>{{row.telnumber}}</td>-->
+<!--                        <td>{{row.address}}</td>-->
+<!--                        <td>{{row.newaddress}}</td>-->
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+    </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable({
+                    "aLengthMenu": [[5, 10, 15, 20, 50, -1], [5, 10, 15, 25, 50, "All"]],
+                    "iDisplayLength": 5
+                }
+            );
+        });
+    </script>
+<!--        <div id="example" class="board_list_wrap">-->
+<!--            <div class="board_list">-->
+<!--                <div class="top">-->
+<!--                    <div class="num">번호</div>-->
+<!--                    <div class="title">제목</div>-->
+<!--                    <div class="info">글쓴이</div>-->
+<!--                    <div class="date">작성일</div>-->
+<!--                    <div class="count">조회</div>-->
+<!--                </div>-->
+<!--                {% for post in postlist %}-->
+<!--                <div id="list-box">-->
+<!--                    <div class="num">{{ post['id'] }}</div>-->
+<!--    <div class="title"><a style="color:#110957;" href="/post/content/{{post['id']}}">{{ post['title'] }}</a></div>-->
+<!--                    <div class="info">{{ post['name'] }}</div>-->
+<!--                    <div class="date">{{ post['wdate'] }}</div>-->
+<!--                    <div class="count">{{ post['view'] }}</div>-->
+<!--                </div>-->
+<!--                {% endfor %}-->
+<!--            </div>-->
+
+<!--                <script>-->
+<!--                    $(document).ready(function() {-->
+<!--                    $('#example').DataTable({-->
+<!--                            "aLengthMenu": [[5, 10, 15, 20, 50, -1], [5, 10, 15, 25, 50, "All"]],-->
+<!--                            "iDisplayLength": 5-->
+<!--                        }-->
+<!--                    );-->
+<!--                } );-->
+<!--                </script>-->
+<!--            <div class="board_page">-->
+<!--                <a href="" class="bt first"><<</a>-->
+<!--                <a href="" class="bt prev"><</a>-->
+<!--                <a href="" class="num on">1</a>-->
+<!--                <a href="" class="num">2</a>-->
+<!--                <a href="" class="num">3</a>-->
+<!--                <a href="" class="num">4</a>-->
+<!--                <a href="" class="num">5</a>-->
+<!--                <a href="" class="bt next">></a>-->
+<!--                <a href="" class="bt last">>></a>-->
+<!--            </div>-->
+            <div class="bt_wrap">
+                <button class="btn btn-dark btn-right" type="button" onclick="location.href='/'">HOME</button>
+                {% if logininfo %}
+                <button class="btn btn-dark btn-right" type="button" onclick="location.href='/logout'">로그아웃</button>
+                {% else %}
+                <button class="btn btn-dark btn-right" type="button" onclick="location.href='/login'">로그인</button>
+                {% endif %}
+                <button class="btn btn-dark btn-right" type="button" onclick="location.href='/write'">
+                    <strong>게시글쓰기</strong></button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
