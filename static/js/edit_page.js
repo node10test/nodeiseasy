@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    const id = 4;
+    const id = 1;
     $.ajax({
         type: "GET",
         url: `/users/${id}`,
@@ -8,15 +8,16 @@ $(document).ready(function () {
             const rows = response["users"]
             let name = rows['name']
             let desc = rows["desc"]
+            let img = rows["img"]
             let temp_html = `<div class="whole">
                                     <div class="myprofile">
                                         <form method="post" action="/upload" enctype="multipart/form-data" class="form-inline">
                                             <div class="form-group">
                                                 <input type="file" name="files[]" id="fileInput" onchange="test()" class="form-control">
-                                                <img class="default_img" id="ex" style="width: 36%; height: 15rem;">
+                                                <img src="../static/img/${img}" class="default_img" id="ex" style="width: 36%; height: 15rem;">
                                             </div>
                                             <input type="submit" name="submit" class="btn btn-success" value="UPLOAD"/>
-                                       </form>
+                                        </form>
                                     </div>   
                                     <form method="post" action="/users/${id}">     
                                         <div class="d1">
@@ -38,15 +39,10 @@ $(document).ready(function () {
                                             <button type="button" class="btn btn-dark" style="margin-left: 1rem">닫기</button>
                                         </a>
                                     </form>
-                            </div>
-                                
-                                `
+                            </div>                                                          `
             $('.myinfo').append(temp_html)
         }
     })
-
-
-
 })
 
 $(document).ready(function () {
@@ -64,9 +60,8 @@ $(document).ready(function () {
                     console.log(fileLength)
                     window.location.href = "/my_page"
                     return false;
-
                 }
             }
         });
-    })
+})
 

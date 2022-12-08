@@ -37,7 +37,7 @@ def get_users(id):
     # connection 으로부터 cursor(fetch 역할) 생성
     curs = db.cursor()
     # 쿼리문 작성
-    sql = '''SELECT `name`,`desc` FROM `users` AS u WHERE u.id = %s'''
+    sql = '''SELECT `name`,`desc`,`img` FROM `users` AS u WHERE u.id = %s'''
 
     # 쿼리 실행
     curs.execute(sql, id)
@@ -45,14 +45,15 @@ def get_users(id):
     # 결과 받고 컨트롤 하기 / 전체 데이터 패치
     rows = curs.fetchall()
 
-    print(rows)
+    # print(rows)
 
     db.commit()
     db.close()
 
     result = {
         "name": rows[0][0],
-        "desc": rows[0][1]
+        "desc": rows[0][1],
+        "img": rows[0][2]
     }
 
     return jsonify({'users': result}), 200
@@ -85,11 +86,15 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 @app.route("/upload", methods=['GET', 'POST'])
 def upload():
-    print(0)
+    # 아래 섹션 나중에 지워야됨
+    session['email'] = "haebin1622@naver.com"
+    # print(0)
     db = pymysql.connect(user="root", passwd="qwe1357asd!", host="localhost", db="dailycafe", charset="utf8")
     cur = db.cursor(pymysql.cursors.DictCursor)
-    print(1)
+    # print(1)
     now = datetime.now()
+    up_email = session['email']
+    # print(up_email)
     if request.method == 'POST':
         files = request.files.getlist('files[]')
         # print(files)
@@ -97,9 +102,10 @@ def upload():
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                cur.execute("INSERT INTO images (file_name,upload_time) VALUES (%s,%s)", [filename,now])
+                sql = f'UPDATE users SET img="{filename}",upload_time="{now}" WHERE email="{up_email}";'
+                cur.execute(sql)
                 db.commit()
-            print(file)
+            # print(file)
         db.close()
         flash('사진이 성공적으로 업로드 되었어요!')
     return redirect('/edit_page')
