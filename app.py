@@ -4,6 +4,7 @@ import bcrypt
 
 app = Flask(__name__)
 # 로컬 mysql 연결 by TK
+
 conn = pymysql.connect(host='localhost',
                        user='root',
                        password='1231234',
