@@ -1,8 +1,8 @@
 $(document).ready(function () {
-        const id = 1;
+        // const id = 1;
         $.ajax({
             type: "GET",
-            url: `/users/${id}`,
+            url: `/users`,
             data: {},
             success: function (response) {
                 const rows = response["users"];

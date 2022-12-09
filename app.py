@@ -258,11 +258,14 @@ def my_page():
 
 @app.route('/edit_page')
 def edit_page():
+    print(123)
     return render_template('edit_page.html')
 
 
-@app.route('/users/<id>', methods=['GET'])
-def get_users(id):
+@app.route('/users', methods=['GET'])
+def get_users():
+    print(5678)
+    id = session["id"]
     db = pymysql.connect(host=f'{host}',
                            user=f'{mysqluser}',
                            password=f'{pwd}',
@@ -293,8 +296,9 @@ def get_users(id):
     return jsonify({'users': result}), 200
 
 
-@app.route('/users/<id>', methods=['POST'])
-def post_users(id):
+@app.route('/users', methods=['POST'])
+def post_users():
+    id = session["id"]
     db = pymysql.connect(host=f'{host}',
                            user=f'{mysqluser}',
                            password=f'{pwd}',
@@ -324,17 +328,16 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@app.route("/upload", methods=['GET', 'POST'])
+@app.route("/upload", methods=['POST'])
 def upload():
-
     # 아래 섹션 나중에 지워야됨
-    session['email'] = "haebin1622@naver.com"
+    # session['email'] = "haebin1622@naver.com"
     db = pymysql.connect(user="root", passwd="qwe1357asd!", host="localhost", db="dailycafe", charset="utf8")
     cur = db.cursor(pymysql.cursors.DictCursor)
     # 저장 시간 저장
     now = datetime.now()
     # 이메일 세션 저장
-    up_email = session['email']
+    id = session['id']
     # method = post 이면
     if request.method == 'POST':
          # input 타입의 태그 이름을 files에 저장
@@ -347,7 +350,7 @@ def upload():
                 # 이건 더
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 # users 테이블 안에 있는 세션 저장한 email의 img, upload_time의 컬럼 값을 변경
-                sql = f'UPDATE users SET img="{filename}",upload_time="{now}" WHERE email="{up_email}";'
+                sql = f'UPDATE users SET img="{filename}",upload_time="{now}" WHERE id="{id}";'
                 # sql 쿼리문 실행
                 cur.execute(sql)
                 # 커밋 및 연결 종료

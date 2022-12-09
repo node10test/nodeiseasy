@@ -1,13 +1,15 @@
 //  html 실행이 되면 준비됐으니까 함수를 실행
 // get 방식은 ajax를 하고 , post 방식은 form 형태로 수행
 $(document).ready(function () {
-    const id = 1;
+    console.log(1)
+    // const id = 1;
     $.ajax({
         type: "GET",
-        url: `/users/${id}`,
+        url: `/users`,
         data: {},
         //response 정체 밝히기
         success: function (response) {
+            console.log(2)
             const rows = response["users"]
             let name = rows['name']
             let desc = rows["desc"]
@@ -28,7 +30,7 @@ $(document).ready(function () {
                                         </form>
                                     </div>   
 <!--                                    method = post , action = users의 id 컬럼 값-->
-                                    <form method="post" action="/users/${id}">     
+                                    <form method="post" action="/users">     
                                         <div class="d1">
                                             <div class="a1">아이디</div>
                                             <div class="form-floating mb-3" style="flex-grow: 2; ">
