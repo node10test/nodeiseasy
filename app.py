@@ -10,7 +10,7 @@ from flask_paginate import Pagination, get_page_args, get_page_parameter
 mysqluser = "root"
 mysqldb = "dailycafe"
 host = "localhost"
-pwd = "qwe1357asd!"
+pwd = "3d720307"
 logfiledir = "server.log"
 
 
@@ -327,9 +327,11 @@ def allowed_file(filename):
 @app.route("/upload", methods=['GET', 'POST'])
 def upload():
 
-    # 아래 섹션 나중에 지워야됨
-    session['email'] = "haebin1622@naver.com"
-    db = pymysql.connect(user="root", passwd="qwe1357asd!", host="localhost", db="dailycafe", charset="utf8")
+    db = pymysql.connect(host=f'{host}',
+                           user=f'{mysqluser}',
+                           password=f'{pwd}',
+                           db=f'{mysqldb}',
+                           charset='utf8')
     cur = db.cursor(pymysql.cursors.DictCursor)
     # 저장 시간 저장
     now = datetime.now()

@@ -11,7 +11,7 @@ $(document).ready(function () {
                 let img = rows["img"]
                 // console.log(img)
                 let temp_html2 =`<div class="myphoto">
-                                    <img src="../static/img/${img}" style="border-radius: 100%;" alt="user-image">
+                                    <img src="/static/img/${img}" style="border-radius: 100%;" alt="user-image">
                                 </div>`
                 let temp_html = `<form method="post" action="/" enctype="multipart/form-data"></form>
                                      <div class="myinfo0"></div>
