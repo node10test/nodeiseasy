@@ -10,21 +10,31 @@
 <body>
     <div class="myinfo">
         <div>
+<!--            폼 방식 사용하기 위한 형태  get_flashed_messages() 함수 선언  -->
         {% with messages = get_flashed_messages() %}
+<!--            만약 메시지가 있다면  -->
         {% if messages %}
+<!--            반복문을 돌려준다  -->
         {% for message in messages %}
-        <script type="text/javascript">
-            alert("{{ message }}");
-        </script>
+        <div class="alert alert-success">
+<!--            alert, strong 등 다양하게 메시지를 전달 가능-->
+            <strong>{{ message }}</strong>
+        </div>
         {% endfor %}
         {% endif %}
         {% endwith %}
     </div>
     </div>
     <script>
+<!--        사진 미리보기 함수  -->
         function test() {
+            // id = fileInput 를 만족하는 값을 찾아줌을 파일에 저장
+            // selector = 경로를 정확하게 찾아주는 친구
+            // queryselector = 쿼리문(원하는 정보를 요청하기 위한 것)을 이용한 쿼리 셀렉터
             let 파일 = document.querySelector('#fileInput').files;
+            // 첫번째 파일의 url을 url에 저장
             let url = URL.createObjectURL(파일[0]);
+            // url 을 id = ex 의 경로에 저장
             document.querySelector('#ex').src = url;
         }
     </script>
