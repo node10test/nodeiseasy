@@ -10,7 +10,7 @@ from flask_paginate import Pagination, get_page_args, get_page_parameter
 mysqluser = "root"
 mysqldb = "dailycafe"
 host = "localhost"
-pwd = "3d720307"
+pwd = "12345"
 
 app = Flask(__name__)
 app.secret_key = 'any random string'
@@ -179,8 +179,6 @@ def login():
         cur.close()
         print(user)
         print(password)
-        print(bcrypt.hashpw(password, user['password'].encode('utf-8')))
-        print(user['password'].encode('utf-8'))
 
         if user is not None:
             print(1)
@@ -196,6 +194,7 @@ def login():
                         for data in result:
                             print(data)
                 return render_template('index.html', result=result)
+
             else:
                 msg = '이메일 또는 비밀번호를 확인해주세요'
                 return render_template('login.html', msg=msg)
