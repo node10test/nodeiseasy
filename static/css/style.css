@@ -24,7 +24,37 @@ header,
     font-family: 'Cafe24Oneprettynight';
   }
 }
+.dataTables_info {
+    color: inherit; font-size: 35px; font-style: inherit; margin: 25px;
+}
+.example_paginate{
+    font-size: 35px;
+}
 
+#example_filter > label > input[type=search]{
+    width: 300px;
+}
+#example_paginate{
+    font-size: 50px;
+}
+#example_previous{
+    font-size: 30px;
+}
+#example_paginate > span{
+    font-size: 30px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+#example_next{
+    font-size: 30px;
+}
+label{
+    font-size: 20px;
+}
+a{
+    font-size: 25px;
+
+}
 .top-nav-collapse {
   background-color: #78909c !important;
 }

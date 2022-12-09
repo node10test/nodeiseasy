@@ -12,6 +12,7 @@ mysqldb = "dailycafe"
 host = "localhost"
 pwd = "qwe1357asd!"
 
+
 app = Flask(__name__)
 app.secret_key = 'any random string'
 
@@ -179,8 +180,6 @@ def login():
         cur.close()
         print(user)
         print(password)
-        print(bcrypt.hashpw(password, user['password'].encode('utf-8')))
-        print(user['password'].encode('utf-8'))
 
         if user is not None:
             print(1)
@@ -196,6 +195,7 @@ def login():
                         for data in result:
                             print(data)
                 return render_template('index.html', result=result)
+
             else:
                 msg = '이메일 또는 비밀번호를 확인해주세요'
                 return render_template('login.html', msg=msg)
@@ -375,11 +375,9 @@ def connectsql():
 # board테이블의 게시판 제목리스트 역순으로 출력
 def post():
     if 'email' in session:
-        email = session['email']
-        return render_template('post.html')
+        username = session['email']
     else:
-        email = None
-        return render_template('login.html')
+        username = None
 
     conn = connectsql()
     cursor = conn.cursor(pymysql.cursors.DictCursor)
@@ -391,7 +389,7 @@ def post():
     cursor.close()
     conn.close()
 
-    return render_template('post.html', result=result, logininfo=email)
+    return render_template('post.html', result=result, logininfo=username)
 
 
 # postlist=postlist

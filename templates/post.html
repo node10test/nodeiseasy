@@ -11,15 +11,34 @@
         <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 
         <link rel="stylesheet" href="/static/css/style.css">
+        <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
 
 		<title>post page</title>
 	</head>
-    <body style="font-size: none">
+    <body style="">
 
+<!--  API start  -->
+
+    <script src="{{ url_for('static', filename='js/apikey.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/openweather.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/timenow.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/kakaobook.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/searchdata.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/pagination.js') }}"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d3b0088d8856d6aa79f00c3da218ea95&libraries=services,clusterer,drawing"></script>
+
+<!--  API end  -->
+
+    <header>
+        <h1><a href="/" style="text-decoration: none;">오늘의 카페</a></h1>
+        <div class="timenow">
+            <h2><p id="time">00:00:00</p></h2>
+            <h2><p id="date">00:00:00</p></h2>
+        </div>
     {% if session.get('email') is not none %}
     <nav>
         <span class="spanmenu"><a href="/signup">회원가입</a></span>
-        <span class="spanmenu"><a href="/login">로그아웃</a></span>
+        <span class="spanmenu"><a href="/logout">로그아웃</a></span>
         <span class="spanmenu"><a href="/my_page">마이 페이지</a></span>
         <span class="spanmenu"><a href="/post">커뮤니티</a></span>
     </nav>
@@ -71,7 +90,7 @@
     <script>
         $(document).ready(function () {
             $('#example').DataTable({
-                    "aLengthMenu": [[5, 10, 15, 20, 50, -1], [5, 10, 15, 25, 50, "All"]],
+                    "aLengthMenu": [[5, 10, 15, 20, 50, -1], [5, 10, 15, 20, 50, "All"]],
                     "iDisplayLength": 5
                 }
             );

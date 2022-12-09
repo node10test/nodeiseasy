@@ -12,7 +12,7 @@
         if (e.target.href) {
             const getUrlParams = () => {
                 var params = {};
-                //이건
+                //패턴매칭, gi = replace gi  g발생한 모든 패턴에서 전역검색 i대소문자 구문안함
                 e.target.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,
                     function (str, key, value) {
                         params[key] = value;
