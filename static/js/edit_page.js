@@ -23,7 +23,7 @@ $(document).ready(function () {
 <!--  type = 태그 모양을 변경 / name = 태그 이름 / onchange = 미리보기 함수 / placeholder = 태그 입력 값에 대한 힌트  -->
                                                 <input type="file" name="files[]" id="fileInput" onchange="test()" class="form-control">
 <!--  이미지 경로를 static 폴더 안의 img 폴더의 변수 선언을 한 값? -->
-                                                <img src="../static/img/${img}" class="default_img" id="ex" style="width: 36%; height: 15rem;">
+                                                <img src="/static/img/${img}" class="default_img" id="ex" style="width: 36%; height: 15rem;">
                                             </div>
 <!--  submit 버튼을 누르면 에러메시지가 웹 브라우저에 출력  -->
                                             <input type="submit" name="submit" class="btn btn-success" value="UPLOAD"/>
