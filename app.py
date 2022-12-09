@@ -4,38 +4,39 @@ import pymysql
 import bcrypt
 import os
 from werkzeug.utils import secure_filename
-import datetime
+from datetime import datetime
 from flask_paginate import Pagination, get_page_args, get_page_parameter
 #db 정보에 대한 변수(f스트링으로 받음)
 mysqluser = "root"
 mysqldb = "dailycafe"
 host = "localhost"
 pwd = "qwe1357asd!"
+logfiledir = "server.log"
 
 
 app = Flask(__name__)
 app.secret_key = 'any random string'
 
-if not app.debug:
-    # 즉 debug=true면 이는 false로서 아래 함수가 돌아간다.
-    # 실제 상용화단계에서 로깅을 진행해라는 의미이다
-    import logging
-    from logging.handlers import RotatingFileHandler
-
-    # logging 핸들러에서 사용할 핸들러를 불러온다.
-    file_handler = RotatingFileHandler(
-        'log/server.log', maxBytes=2000, backupCount=10)
-    file_handler.setLevel(logging.WARNING)
-    # 어느 단계까지 로깅을 할지를 적어줌
-    # app.logger.addHandler() 에 등록시켜줘야 app.logger 로 사용 가능
-    app.logger.addHandler(file_handler)
-
-
-@app.errorhandler(404)
-def page_not_found(error):
-    asctime = datetime.datetime.now()
-    app.logger.error(f'시간:{asctime}/page_not_found 오류입니다.')
-    return "<h1>해당 경로에 맞는 웹페이지가 없습니다. 문제가 지속되면, 죄송하지만 관리자에게 연락해주세요</h1>", 404
+# if not app.debug:
+#     # 즉 debug=true면 이는 false로서 아래 함수가 돌아간다.
+#     # 실제 상용화단계에서 로깅을 진행해라는 의미이다
+#     import logging
+#     from logging.handlers import RotatingFileHandler
+#
+#     # logging 핸들러에서 사용할 핸들러를 불러온다.
+#     file_handler = RotatingFileHandler(
+#         f'{logfiledir}', maxBytes=2000, backupCount=10)
+#     file_handler.setLevel(logging.WARNING)
+#     # 어느 단계까지 로깅을 할지를 적어줌
+#     # app.logger.addHandler() 에 등록시켜줘야 app.logger 로 사용 가능
+#     app.logger.addHandler(file_handler)
+#
+#
+# @app.errorhandler(404)
+# def page_not_found(error):
+#     asctime = datetime.datetime.now()
+#     app.logger.error(f'시간:{asctime}/page_not_found 오류입니다.')
+#     return "<h1>해당 경로에 맞는 웹페이지가 없습니다. 문제가 지속되면, 죄송하지만 관리자에게 연락해주세요</h1>", 404
 
 
 @app.route('/')
