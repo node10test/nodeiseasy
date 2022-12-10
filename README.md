@@ -1,4 +1,4 @@
-# Node.js A Daily Cafe
+# Node.js트랙 A반 10조 Daily Cafe
 ******************
 👀 프로젝트 완성본 기술 시연 https://wth2052.tistory.com/86  
 👀 최종 프로젝트 KPT 회고 https://wth2052.tistory.com/85
