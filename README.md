@@ -1,4 +1,9 @@
 # Node.js A Daily Cafe
+******************
+👀 프로젝트 완성본 기술 시연 https://wth2052.tistory.com/86
+👀 최종 프로젝트 KPT 회고 https://wth2052.tistory.com/85
+******************
+
 
 - **프로젝트 개요**
     1. 프로젝트 명: 오늘의 카페
