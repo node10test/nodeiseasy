@@ -58,7 +58,7 @@ def home():
     return render_template('index.html', result=result)
 
 
-@app.route("/searchdata", methods=["POST", "GET"])
+@app.route("/searchdata", methods=["GET"])
 def searchdata():
     conn = pymysql.connect(host=f'{host}',
                            user=f'{mysqluser}',
@@ -558,74 +558,6 @@ def write():
         else:
             return render_template('error.html')
 
-
-# @app.route('/logout')
-# # email 세션 해제
-# def logout():
-#     session.pop('email', None)
-#     return redirect(url_for('index'))
-#
-#
-# @app.route('/login', methods=['GET', 'POST'])
-# # GET -> 로그인 페이지 연결
-# # POST -> 로그인 시 form에 입력된 id, pw를 table에 저장된 id, pw에 비교후 일치하면 로그인, id,pw 세션유지
-# def login():
-#     if request.method == 'POST':
-#         userid = request.form['id']
-#         userpw = request.form['pw']
-#
-#         logininfo = request.form['id']
-#         conn = connectsql()
-#         cursor = conn.cursor()
-#         query = "SELECT * FROM tbl_user WHERE user_name = %s AND user_password = %s"
-#         value = (userid, userpw)
-#         cursor.execute(query, value)
-#         data = cursor.fetchall()
-#         cursor.close()
-#         conn.close()
-#
-#         for row in data:
-#             data = row[0]
-#
-#         if data:
-#             session['email'] = request.form['id']
-#             session['password'] = request.form['pw']
-#             return render_template('index.html', logininfo=logininfo)
-#         else:
-#             return render_template('loginError.html')
-#     else:
-#         return render_template('login.html')
-
-
-# @app.route('/regist', methods=['GET', 'POST'])
-# # GET -> 회원가입 페이지 연결
-# # 회원가입 버튼 클릭 시, 입력된 id가 tbl_user의 컬럼에 있을 시 에러팝업, 없을 시 회원가입 성공
-# def regist():
-#     if request.method == 'POST':
-#         userid = request.form['id']
-#         userpw = request.form['pw']
-#
-#         conn = connectsql()
-#         cursor = conn.cursor()
-#         query = "SELECT * FROM tbl_user WHERE user_name = %s"
-#         value = userid
-#         cursor.execute(query, value)
-#         data = (cursor.fetchall())
-#         # import pdb; pdb.set_trace()
-#         if data:
-#             conn.rollback()  # 이건 안 써도 될 듯
-#             return render_template('registError.html')
-#         else:
-#             query = "INSERT INTO tbl_user (user_name, user_password) values (%s, %s)"
-#             value = (userid, userpw)
-#             cursor.execute(query, value)
-#             data = cursor.fetchall()
-#             conn.commit()
-#             return render_template('registSuccess.html')
-#         cursor.close()
-#         conn.close()
-#     else:
-#         return render_template('regist.html')
 
 
 if __name__ == '__main__':
